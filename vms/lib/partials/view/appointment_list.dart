@@ -19,13 +19,17 @@ class _AppointmentListState extends State<AppointmentList> {
           dayName: "Sunday",
         ),
         AppointmentListItem(
-            dateTime: "9:00 AM - 12:00 PM",
-            appointmentType: "Personal",
-            visitorName: "Peter Abu-Ekpeshie"),
+          dateTime: "9:00 AM - 12:00 PM",
+          appointmentType: "Personal",
+          visitorName: "Peter Abu-Ekpeshie",
+          isGroupVisit: false,
+        ),
         AppointmentListItem(
-            dateTime: "9:00 AM - 12:00 PM",
-            appointmentType: "Official",
-            visitorName: "5 visitors"),
+          dateTime: "11:00 AM - 1:30 PM",
+          appointmentType: "Official",
+          visitorName: "5 visitors",
+          isGroupVisit: true,
+        ),
       ]),
     );
   }

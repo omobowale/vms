@@ -12,7 +12,7 @@ class AppointmentDayDate extends StatelessWidget {
     return Container(
       child: Row(children: [
         Container(
-          margin: EdgeInsets.all(15),
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Text(
             this.dayName.toUpperCase(),
             style: TextStyle(

@@ -4,12 +4,14 @@ class AppointmentListItem extends StatefulWidget {
   final String dateTime;
   final String appointmentType;
   final String visitorName;
+  final bool isGroupVisit;
 
   const AppointmentListItem({
     Key? key,
     required this.dateTime,
     required this.appointmentType,
     required this.visitorName,
+    required this.isGroupVisit,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,12 @@ class _AppointmentListItemState extends State<AppointmentListItem> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          left: BorderSide(width: 3.0, color: Colors.green),
+          left: BorderSide(
+            width: 2,
+            color: widget.isGroupVisit
+                ? Colors.grey.withOpacity(0.3)
+                : Colors.green,
+          ),
         ),
         color: Colors.white,
       ),
@@ -31,13 +38,13 @@ class _AppointmentListItemState extends State<AppointmentListItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 3, left: 6),
+            margin: EdgeInsets.only(bottom: 3, left: 8),
             child: Text(widget.dateTime),
           ),
           Row(
             children: [
               Container(
-                margin: EdgeInsets.only(left: 6),
+                margin: EdgeInsets.only(left: 8),
                 child: Text(
                   widget.appointmentType,
                   style: TextStyle(
