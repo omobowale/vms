@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vms/home.dart';
 import 'package:vms/login.dart';
+import 'package:vms/view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text("Welcome"),
         ),
-        body: Home(),
+        body: View(),
       ),
     );
   }
