@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vms/custom_widgets/appointment_day_date.dart';
-import 'package:vms/custom_widgets/appointment_list_item.dart';
+import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
+import 'package:vms/custom_widgets/custom_appointment_list_item.dart';
 
 class AppointmentList extends StatefulWidget {
   const AppointmentList({Key? key}) : super(key: key);

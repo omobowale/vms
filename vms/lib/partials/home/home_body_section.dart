@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vms/custom_widgets/module_card.dart';
+import 'package:vms/custom_widgets/custom_module_card.dart';
 
 class HomeBodySection extends StatefulWidget {
   const HomeBodySection({Key? key}) : super(key: key);

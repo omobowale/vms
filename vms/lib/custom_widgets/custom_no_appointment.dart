@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:vms/custom_widgets/appointment_day_date.dart';
+import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
 
 class NoAppointment extends StatelessWidget {
   final String date;

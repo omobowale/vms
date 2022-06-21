@@ -6,7 +6,7 @@ class LoginLogoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 20, left: 10),
       child: Row(
         children: [
           Container(
@@ -15,7 +15,7 @@ class LoginLogoSection extends StatelessWidget {
               children: [
                 Container(
                   child: Image.asset(
-                    "assets/images/fbn_name_2x_logo.png",
+                    "assets/images/fbn_name_logo.png",
                   ),
                 ),
                 Container(
@@ -25,7 +25,7 @@ class LoginLogoSection extends StatelessWidget {
                     children: [
                       Container(
                         child: Image.asset(
-                          "assets/images/fbn_year_2x_logo.png",
+                          "assets/images/fbn_year_logo.png",
                         ),
                       ),
                     ],
@@ -35,7 +35,7 @@ class LoginLogoSection extends StatelessWidget {
             ),
           ),
           Container(
-            child: Image.asset("assets/images/fbn_logo_2x.png"),
+            child: Image.asset("assets/images/fbn_logo.png"),
           )
         ],
       ),

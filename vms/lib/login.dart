@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vms/home.dart';
 import 'package:vms/partials/login/login_logo_section.dart';
 import 'package:vms/partials/login/login_welcome_section.dart';
+import 'package:vms/view.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -39,7 +41,7 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(10),
                           child: TextFormField(
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
                             textCapitalization: TextCapitalization.characters,
@@ -71,7 +73,7 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(10),
                           child: TextFormField(
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
                             controller: passwordController,
@@ -122,7 +124,7 @@ class _LoginState extends State<Login> {
                       child: const Text(
                         "Login",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -145,7 +147,10 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Home()));
+                      },
                     ),
                   ),
                 ),

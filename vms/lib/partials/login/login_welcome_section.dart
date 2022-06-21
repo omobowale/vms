@@ -15,18 +15,18 @@ class LoginWelcomeSection extends StatelessWidget {
           child: Text(
             "Welcome back",
             style: TextStyle(
-              fontSize: 26,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
               color: Color(0xff000000),
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(6, 0, 10, 22),
+          margin: EdgeInsets.fromLTRB(6, 0, 10, 10),
           child: Text(
             "Login to your account",
             style: TextStyle(
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: Color.fromRGBO(0, 0, 0, 0.56)),
           ),
