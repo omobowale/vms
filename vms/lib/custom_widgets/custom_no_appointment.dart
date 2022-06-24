@@ -5,11 +5,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
 
 class NoAppointment extends StatelessWidget {
-  final String date;
-  final String dayName;
-
-  const NoAppointment({Key? key, required this.date, required this.dayName})
-      : super(key: key);
+  final DateTime selectedDate;
+  const NoAppointment({
+    Key? key,
+    required this.selectedDate,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,7 @@ class NoAppointment extends StatelessWidget {
       child: Column(
         children: [
           AppointmentDayDate(
-            date: date,
-            dayName: dayName,
+            selectedDate: selectedDate,
           ),
           Container(
             margin: EdgeInsets.only(left: 12, right: 12, bottom: 20, top: 12),

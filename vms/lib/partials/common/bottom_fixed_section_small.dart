@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vms/custom_classes/palette.dart';
 
-class BottomFixedSection extends StatelessWidget {
+class BottomFixedSectionSmall extends StatelessWidget {
   final String leftText;
   final String rightText;
   Function fnOne, fnTwo;
 
-  BottomFixedSection({
+  BottomFixedSectionSmall({
     Key? key,
     required this.leftText,
     required this.rightText,
@@ -30,7 +30,7 @@ class BottomFixedSection extends StatelessWidget {
               },
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(6),
                 child: Text(
                   leftText,
                   style: TextStyle(
@@ -61,7 +61,7 @@ class BottomFixedSection extends StatelessWidget {
               },
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(6),
                 child: Text(
                   rightText,
                   style: TextStyle(
@@ -70,9 +70,9 @@ class BottomFixedSection extends StatelessWidget {
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Palette.FBN_BLUE,
+                  color: Palette.FBN_GREEN,
                   border: Border.all(
-                    color: Palette.FBN_BLUE,
+                    color: Palette.FBN_GREEN,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(50),

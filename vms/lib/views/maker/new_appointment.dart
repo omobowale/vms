@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
 import 'package:vms/partials/new_appointment/date_time.dart';
 import 'package:vms/partials/new_appointment/host_section.dart';
 import 'package:vms/partials/new_appointment/purpose_of_visit.dart';
 import 'package:vms/partials/common/top.dart';
 import 'package:vms/partials/new_appointment/visitor_type.dart';
+import 'package:vms/views/maker/appointment_location.dart';
+import 'package:vms/views/view.dart';
 
 class NewAppointment extends StatefulWidget {
   const NewAppointment({Key? key}) : super(key: key);
@@ -35,9 +35,18 @@ class _NewAppointmentState extends State<NewAppointment> {
           Divider(),
           VisitPurpose(),
           BottomFixedSection(
-            leftText: "Back",
-            rightText: "Continue",
-          ),
+              leftText: "Back",
+              rightText: "Continue",
+              fnOne: () {
+                print("Go to view");
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => View()));
+              },
+              fnTwo: () {
+                print("Go to appointment location");
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppointmentLocation()));
+              }),
         ],
       ),
     );

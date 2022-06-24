@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:vms/appointment_location.dart';
+import 'package:get_it/get_it.dart';
 import 'package:vms/custom_classes/palette.dart';
-import 'package:vms/login.dart';
-import 'package:vms/new_appointment.dart';
-import 'package:vms/visitor_information.dart';
+import 'package:vms/services/appointment_service.dart';
+import 'package:vms/views/login.dart';
+
+void setUpLocator() {
+  GetIt.I.registerLazySingleton(() => AppointmentService());
+}
 
 void main() {
+  setUpLocator();
   runApp(const MyApp());
 }
 
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Appointment Schedule',
+      title: 'Appointment Scheduler',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -33,10 +37,10 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          toolbarHeight: 12,
-          title: Text(""),
+          toolbarHeight: 15,
+          title: const Text(""),
         ),
-        body: VisitorInformation(),
+        body: const Login(),
       ),
     );
   }

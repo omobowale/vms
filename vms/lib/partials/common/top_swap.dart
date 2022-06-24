@@ -4,11 +4,16 @@ import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/custom_widgets/custom_text_with_background.dart';
 import 'package:vms/partials/common/confirmation_modal.dart';
 
-class TopSection extends StatelessWidget {
+class TopSwapSection extends StatelessWidget {
   final String leftText;
   final String rightText;
+  final Function fnOne;
 
-  const TopSection({Key? key, required this.leftText, required this.rightText})
+  const TopSwapSection(
+      {Key? key,
+      required this.leftText,
+      required this.rightText,
+      required this.fnOne})
       : super(key: key);
 
   @override
@@ -18,28 +23,25 @@ class TopSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          CustomTextWithBackground(
+            text: leftText,
+            textColor: Palette.FBN_BLUE,
+            backgroundColor: Color.fromRGBO(0, 59, 101, 0.05),
+            fn: () {
+              fnOne();
+            },
+          ),
           Container(
             child: Text(
-              leftText,
+              rightText,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
               ),
             ),
           ),
-          CustomTextWithBackground(
-            text: rightText,
-            textColor: Palette.FBN_BLUE,
-            backgroundColor: Color.fromRGBO(0, 59, 101, 0.05),
-            fn: () {
-              showModalBottomSheet<void>(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ConfirmationModal();
-                  });
-            },
-          ),
+          Container(),
+          Container(),
         ],
       ),
     );

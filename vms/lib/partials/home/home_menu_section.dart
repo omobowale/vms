@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vms/main.dart';
+import 'package:vms/views/login.dart';
 
 class HomeMenuSection extends StatefulWidget {
   const HomeMenuSection({Key? key}) : super(key: key);
@@ -86,7 +88,10 @@ class _HomeMenuSectionState extends State<HomeMenuSection> {
                     fontSize: 16,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Login()));
+                },
               ),
             ),
           ),

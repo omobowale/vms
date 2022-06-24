@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:calendar_strip/calendar_strip.dart';
+import 'package:intl/intl.dart';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/views/home.dart';
 
 class CustomCalendarStrip extends StatefulWidget {
-  const CustomCalendarStrip({Key? key}) : super(key: key);
+  final Function onSelect;
+  final DateTime selectedDate;
+  CustomCalendarStrip(
+      {Key? key, required this.selectedDate, required this.onSelect})
+      : super(key: key);
 
   @override
   State<CustomCalendarStrip> createState() => _CustomCalendarStripState();
@@ -12,19 +18,17 @@ class CustomCalendarStrip extends StatefulWidget {
 class _CustomCalendarStripState extends State<CustomCalendarStrip> {
   DateTime startDate = DateTime.now().add(Duration(days: 0));
   DateTime endDate = DateTime.now().add(Duration(days: 7));
-  DateTime selectedDate = DateTime.now();
+  // DateTime selectedDate = DateTime.now();
   List<DateTime> markedDates = [
     DateTime.now().subtract(Duration(days: 1)),
     DateTime.now().subtract(Duration(days: 2)),
     DateTime.now().add(Duration(days: 4))
   ];
 
-  onSelect(data) {
-    print("Selected Date -> $data");
-  }
-
   onWeekSelect(data) {
-    print("Selected week starting at -> $data");
+    if (data != null) {
+      print("Selected week starting at -> $data");
+    }
   }
 
   _monthNameWidget(monthName) {
@@ -42,15 +46,21 @@ class _CustomCalendarStripState extends State<CustomCalendarStrip> {
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.arrow_back_ios, size: 12),
-                  Text(
-                    "Exit",
-                    style: TextStyle(fontWeight: FontWeight.w400),
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Home()));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.arrow_back_ios, size: 12),
+                    Text(
+                      "Exit",
+                      style: TextStyle(fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
               ),
               alignment: Alignment.center,
             ),
@@ -132,18 +142,20 @@ class _CustomCalendarStripState extends State<CustomCalendarStrip> {
         Container(
           margin: EdgeInsets.only(top: 12, bottom: 12),
           color: Palette.CUSTOM_WHITE,
+          // child: Text(""),
           child: CalendarStrip(
             containerHeight: 120,
             startDate: startDate,
+            selectedDate: widget.selectedDate,
             endDate: endDate,
-            onDateSelected: onSelect,
-            onWeekSelected: onWeekSelect,
-            dateTileBuilder: dateTileBuilder,
             iconColor: Palette.FBN_BLUE,
-            monthNameWidget: _monthNameWidget,
             markedDates: markedDates,
+            dateTileBuilder: dateTileBuilder,
+            monthNameWidget: _monthNameWidget,
             weekStartsOnSunday: true,
+            onDateSelected: widget.onSelect,
             containerDecoration: BoxDecoration(color: Palette.CUSTOM_WHITE),
+            onWeekSelected: onWeekSelect,
           ),
         ),
       ],

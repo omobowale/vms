@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/helperfunctions/custom_date_formatter.dart';
 
 class AppointmentDayDate extends StatelessWidget {
-  final String dayName;
-  final String date;
-  const AppointmentDayDate(
-      {Key? key, required this.dayName, required this.date})
+  final DateTime selectedDate;
+  const AppointmentDayDate({Key? key, required this.selectedDate})
       : super(key: key);
 
   @override
@@ -14,14 +14,15 @@ class AppointmentDayDate extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Text(
-            this.dayName.toUpperCase(),
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
+            CustomDateFormatter.getWeekDay(selectedDate),
+            style:
+                TextStyle(fontWeight: FontWeight.w500, color: Palette.FBN_BLUE),
           ),
         ),
         Container(
-          child: Text(this.date),
+          child: Text(
+            CustomDateFormatter.getFormatedDate(selectedDate),
+          ),
         ),
       ]),
     );
