@@ -21,6 +21,7 @@ class _VisitorDetailsState extends State<VisitorDetails> {
               Expanded(
                 flex: 10,
                 child: CustomInputField(
+                  onComplete: () {},
                   bordered: false,
                   hintText: "First name",
                   labelText: "First name",
@@ -33,6 +34,7 @@ class _VisitorDetailsState extends State<VisitorDetails> {
               Expanded(
                 flex: 10,
                 child: CustomInputField(
+                  onComplete: () {},
                   bordered: false,
                   hintText: "Last name",
                   labelText: "Last name",
@@ -44,6 +46,7 @@ class _VisitorDetailsState extends State<VisitorDetails> {
         Container(
           margin: EdgeInsets.only(bottom: 10),
           child: CustomInputField(
+            onComplete: () {},
             bordered: false,
             hintText: "Phone Number",
             labelText: "Phone Number",
@@ -52,6 +55,7 @@ class _VisitorDetailsState extends State<VisitorDetails> {
         Container(
           margin: EdgeInsets.only(bottom: 10),
           child: CustomInputField(
+            onComplete: () {},
             bordered: false,
             hintText: "Email",
             labelText: "Email",

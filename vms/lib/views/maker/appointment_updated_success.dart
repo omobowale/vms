@@ -9,16 +9,17 @@ class AppointmentUpdatedSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: InformationDisplay(
-      infoImagePath: "assets/images/appointment_creation_success.png",
-      messageTitle: "Request Updated",
-      messageBody:
-          "Your appointment request has been updated, you will receive a notification once your Supervisor receives it",
-      buttonText: "Done",
-      buttonFunction: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => View()));
-      },
-    ));
+      body: InformationDisplay(
+        infoImagePath: "assets/images/appointment_creation_success.png",
+        messageTitle: "Request Updated",
+        messageBody:
+            "Your appointment request has been updated, you will receive a notification once your Supervisor receives it",
+        buttonText: "Done",
+        buttonFunction: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => View()));
+        },
+      ),
+    );
   }
 }

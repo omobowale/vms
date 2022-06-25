@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/purpose_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
 import 'package:vms/views/login.dart';
 
@@ -10,7 +13,20 @@ void setUpLocator() {
 
 void main() {
   setUpLocator();
-  runApp(const MyApp());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AppointmentNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PurposeNotifier(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

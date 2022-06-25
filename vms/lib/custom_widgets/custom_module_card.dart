@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 class ModuleCard extends StatefulWidget {
   final String moduleName;
+  final String moduleId;
   final String moduleIconPath;
   final Function onTap;
 
   ModuleCard({
+    Key? key,
+    required this.moduleId,
     required this.moduleName,
     required this.moduleIconPath,
     required this.onTap,
@@ -20,7 +23,7 @@ class _ModuleCardState extends State<ModuleCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onTap();
+        widget.onTap(context);
       },
       child: Container(
         child: Card(

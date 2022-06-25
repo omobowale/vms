@@ -17,6 +17,7 @@ class _ReschedulePurposeState extends State<ReschedulePurpose> {
       child: CustomDropDown(
         text: "Reason for reschedule",
         lists: ['Reason 1', 'Reason 2', 'Reason 3'],
+       
       ),
     );
   }

@@ -27,7 +27,9 @@ class _AssetInformationState extends State<AssetInformation> {
             ),
           ),
           CustomDropDown(
-              text: "Asset type", lists: ["Phone", "Laptop", "Traveling bag"])
+            text: "Asset type",
+            lists: ["Phone", "Laptop", "Traveling bag"],
+          )
         ],
       ),
     );

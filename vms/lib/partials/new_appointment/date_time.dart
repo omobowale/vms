@@ -1,18 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:provider/provider.dart';
+import 'dart:async';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/custom_widgets/custom_date_time_selector.dart';
 import 'package:vms/custom_widgets/custom_drop_down.dart';
+import 'package:vms/data/purposes_of_visit.dart';
+import 'package:vms/helperfunctions/custom_date_formatter.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 
-class DateTimeSection extends StatefulWidget {
-  const DateTimeSection({Key? key}) : super(key: key);
+class DateTimeSection extends StatelessWidget {
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
 
-  @override
-  State<DateTimeSection> createState() => _DateTimeSectionState();
-}
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
 
-class _DateTimeSectionState extends State<DateTimeSection> {
+    if (picked != null && picked != selectedDate) {
+      context.read<AppointmentNotifier>().addAppointmentDate(picked);
+      print(context.read<AppointmentNotifier>().appointments.toString());
+    }
+  }
+
+  Future<TimeOfDay> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked_s =
+        await showTimePicker(context: context, initialTime: selectedTime);
+
+    if (picked_s != null && picked_s != selectedTime) {
+      return picked_s;
+    }
+    return selectedTime;
+  }
+
   @override
   Widget build(BuildContext context) {
+    AppointmentNotifier appointmentNotifier =
+        Provider.of<AppointmentNotifier>(context, listen: false);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -28,52 +55,44 @@ class _DateTimeSectionState extends State<DateTimeSection> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              DatePicker.showDatePicker(context,
-                  showTitleActions: true,
-                  minTime: DateTime(2018, 3, 5),
-                  maxTime: DateTime(2019, 6, 7), onChanged: (date) {
-                print('change $date');
-              }, onConfirm: (date) {
-                print('confirm $date');
-              }, currentTime: DateTime.now(), locale: LocaleType.en);
-            },
-            child: Container(
-              padding: EdgeInsets.all(14),
-              margin: EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Palette.LAVENDAR_GREY,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "12/07/22",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Icon(
-                    Icons.calendar_today,
-                    color: Palette.FBN_BLUE,
-                  ),
-                ],
-              ),
+          CustomDateTimeSelector(
+            icon: Icon(
+              Icons.calendar_today,
+              color: Palette.FBN_BLUE,
             ),
+            onTap: () {
+              _selectDate(context);
+            },
+            selectedText: CustomDateFormatter.getFormatedDate(context
+                .watch<AppointmentNotifier>()
+                .appointments[appointmentNotifier.appointments.length - 1]
+                .appointmentDate),
           ),
           Row(
             children: [
               Expanded(
                 flex: 5,
-                child: CustomDropDown(
-                  lists: ['8:00AM', '9:00AM', '10:00AM', '11:00AM'],
-                  text: "Start time",
+                child: CustomDateTimeSelector(
+                  icon: Icon(
+                    Icons.timer_sharp,
+                    color: Palette.FBN_BLUE,
+                  ),
+                  onTap: () {
+                    _selectTime(context).then((value) {
+                      context.read<AppointmentNotifier>().addStartTime(
+                          CustomDateFormatter.getDateTimeFromTimeOfDay(value));
+                      print("start time: " +
+                          context
+                              .read<AppointmentNotifier>()
+                              .appointments[0]
+                              .startTime
+                              .toString());
+                    });
+                  },
+                  selectedText: CustomDateFormatter.getFormattedTime(context
+                      .watch<AppointmentNotifier>()
+                      .appointments[appointmentNotifier.appointments.length - 1]
+                      .startTime),
                 ),
               ),
               Expanded(
@@ -82,9 +101,31 @@ class _DateTimeSectionState extends State<DateTimeSection> {
               ),
               Expanded(
                 flex: 5,
-                child: CustomDropDown(
-                  lists: ['8:00AM', '9:00AM', '10:00AM', '11:00AM'],
-                  text: "End time",
+                child: CustomDateTimeSelector(
+                  icon: Icon(
+                    Icons.timer_sharp,
+                    color: Palette.FBN_BLUE,
+                  ),
+                  onTap: () {
+                    _selectTime(context).then(
+                      (value) {
+                        context.read<AppointmentNotifier>().addEndTime(
+                              CustomDateFormatter.getDateTimeFromTimeOfDay(
+                                  value),
+                            );
+                        print("end time: " +
+                            context
+                                .read<AppointmentNotifier>()
+                                .appointments[0]
+                                .endTime
+                                .toString());
+                      },
+                    );
+                  },
+                  selectedText: CustomDateFormatter.getFormattedTime(context
+                      .watch<AppointmentNotifier>()
+                      .appointments[appointmentNotifier.appointments.length - 1]
+                      .endTime),
                 ),
               ),
             ],

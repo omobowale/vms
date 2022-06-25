@@ -5,7 +5,8 @@ class Location extends StatelessWidget {
   final String labelText;
   final List<String> listItems;
 
-  const Location({Key? key, required this.labelText, required this.listItems}) : super(key: key);
+  const Location({Key? key, required this.labelText, required this.listItems})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class Location extends StatelessWidget {
       child: CustomDropDown(
         text: labelText,
         lists: listItems,
+       
       ),
     );
   }

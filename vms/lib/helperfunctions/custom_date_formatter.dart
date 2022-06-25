@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CustomDateFormatter {
@@ -36,6 +37,11 @@ class CustomDateFormatter {
       return formatted.toUpperCase();
     }
     return "";
+  }
+
+  static DateTime getDateTimeFromTimeOfDay(TimeOfDay time) {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, time.hour, time.minute);
   }
 
   static String combineTime(String startTime, String endTime) {

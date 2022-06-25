@@ -89,8 +89,8 @@ class _HomeMenuSectionState extends State<HomeMenuSection> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Login()));
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Login()));
                 },
               ),
             ),

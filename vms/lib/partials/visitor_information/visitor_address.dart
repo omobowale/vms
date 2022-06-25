@@ -14,6 +14,7 @@ class VisitorAddress extends StatelessWidget {
       child: Column(
         children: [
           CustomInputField(
+            onComplete: () {},
             bordered: false,
             hintText: "Enter visitor address",
             labelText: "Enter visitor address",

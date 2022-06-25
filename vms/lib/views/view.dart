@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
 import 'package:vms/custom_widgets/custom_calendar_strip_section.dart';
 import 'package:vms/custom_widgets/custom_no_appointment.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/appointment.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
 import 'package:vms/views/maker/new_appointment.dart';
 import 'package:vms/partials/view/appointment_list.dart';
@@ -134,6 +136,7 @@ class _ViewState extends State<View> {
             child: InkWell(
               borderRadius: BorderRadius.circular(500.0),
               onTap: () {
+                context.read<AppointmentNotifier>().addEmptyAppointment();
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => NewAppointment()));
               },

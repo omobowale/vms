@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
 import 'package:vms/partials/new_appointment/date_time.dart';
 import 'package:vms/partials/new_appointment/host_section.dart';
@@ -29,7 +31,11 @@ class _NewAppointmentState extends State<NewAppointment> {
           Divider(),
           VisitorType(),
           Divider(),
-          HostSection(),
+          HostSection(
+            onComplete: (value) {
+              context.read<AppointmentNotifier>().addHostName(value);
+            },
+          ),
           Divider(),
           DateTimeSection(),
           Divider(),
@@ -38,14 +44,17 @@ class _NewAppointmentState extends State<NewAppointment> {
               leftText: "Back",
               rightText: "Continue",
               fnOne: () {
-                print("Go to view");
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => View()));
               },
               fnTwo: () {
-                print("Go to appointment location");
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppointmentLocation()));
+                print(context.read<AppointmentNotifier>().appointments.length);
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AppointmentLocation(),
+                  ),
+                );
               }),
         ],
       ),

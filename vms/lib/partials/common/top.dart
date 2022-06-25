@@ -23,7 +23,7 @@ class TopSection extends StatelessWidget {
               leftText,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontSize: 20,
               ),
             ),
           ),
