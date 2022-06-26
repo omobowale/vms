@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/custom_widgets/custom_input_field.dart';
+import 'package:vms/custom_widgets/custom_input_label.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 
 class HostSection extends StatefulWidget {
@@ -20,14 +20,15 @@ class _HostSectionState extends State<HostSection> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          CustomInputLabel(labelText: "Host name"),
           CustomInputField(
             initialValue: staffName,
             hintText:
                 staffName != null && staffName != "" ? staffName : "Host name",
             labelText:
                 staffName != null && staffName != "" ? staffName : "Host name",
-            // hintText: "Host name",
             bordered: false,
             onComplete: (value) {
               widget.onComplete(value);

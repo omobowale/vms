@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/custom_widgets/custom_date_time_selector.dart';
 import 'package:vms/custom_widgets/custom_drop_down.dart';
+import 'package:vms/custom_widgets/custom_input_label.dart';
 import 'package:vms/data/purposes_of_visit.dart';
 import 'package:vms/helperfunctions/custom_date_formatter.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
@@ -45,16 +46,7 @@ class DateTimeSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10, top: 20),
-            child: Text(
-              "Date & Time",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+          CustomInputLabel(labelText: "Date & Time"),
           CustomDateTimeSelector(
             icon: Icon(
               Icons.calendar_today,

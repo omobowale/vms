@@ -16,14 +16,16 @@ class AppointmentService {
         for (var item in jsonData) {
           var appointment = Appointment(
             id: item["id"],
+            visitPurpose: item["visitPurpose"],
             guests: item["guests"],
             appointmentType: item["appointmentType"],
             approvalStatus: item["approvalStatus"],
             officiality: item["officiality"],
             endTime: DateTime.fromMicrosecondsSinceEpoch(item["endTime"]),
             startTime: DateTime.fromMicrosecondsSinceEpoch(item["startTime"]),
-            floorNumber: item["floorNumber"],
-            roomNumbers: item["roomNumbers"],
+            location: item["location"],
+            floorNumber: item["floorNumber"].toString(),
+            rooms: item["roomNumbers"],
             staffImagePath: item["avatar"],
             staffName: item["name"],
             appointmentDate:
@@ -50,13 +52,15 @@ class AppointmentService {
         var appointment = Appointment(
           id: jsonData["id"],
           guests: jsonData["guests"],
+          visitPurpose: jsonData["visitPurpose"],
           appointmentType: jsonData["appointmentType"],
           approvalStatus: jsonData["approvalStatus"],
           officiality: jsonData["officiality"],
           endTime: DateTime.fromMicrosecondsSinceEpoch(jsonData["endTime"]),
           startTime: DateTime.fromMicrosecondsSinceEpoch(jsonData["startTime"]),
-          floorNumber: jsonData["floorNumber"],
-          roomNumbers: jsonData["roomNumbers"],
+          location: jsonData["location"],
+          floorNumber: jsonData["floorNumber"].toString(),
+          rooms: jsonData["roomNumbers"],
           staffImagePath: jsonData["avatar"],
           staffName: jsonData["name"],
           appointmentDate:

@@ -1,6 +1,7 @@
 class Appointment {
   String id;
   String staffName;
+  String location;
   String officiality;
   String appointmentType;
   DateTime startTime;
@@ -8,15 +9,17 @@ class Appointment {
   DateTime appointmentDate;
   String staffImagePath;
   String approvalStatus;
+  String visitPurpose;
   List<dynamic> guests;
-  int floorNumber;
-  List<dynamic> roomNumbers;
+  String floorNumber;
+  List<dynamic> rooms;
 
   Appointment({
     required this.id,
     required this.staffName,
     required this.officiality,
     required this.startTime,
+    required this.visitPurpose,
     required this.endTime,
     required this.appointmentType,
     required this.approvalStatus,
@@ -24,6 +27,7 @@ class Appointment {
     required this.appointmentDate,
     required this.floorNumber,
     required this.guests,
-    required this.roomNumbers,
+    required this.rooms,
+    required this.location,
   });
 }

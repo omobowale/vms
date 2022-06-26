@@ -15,9 +15,9 @@ class _ReschedulePurposeState extends State<ReschedulePurpose> {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: CustomDropDown(
+        onTap: (_) {},
         text: "Reason for reschedule",
-        lists: ['Reason 1', 'Reason 2', 'Reason 3'],
-       
+        lists: Set.from(['Reason 1', 'Reason 2', 'Reason 3']),
       ),
     );
   }

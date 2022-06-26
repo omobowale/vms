@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/notifiers/purpose_notifier.dart';
+import 'package:vms/notifiers/rooms_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
 import 'package:vms/views/login.dart';
 
@@ -22,6 +23,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => PurposeNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => RoomsNotifier(),
         ),
       ],
       child: MyApp(),

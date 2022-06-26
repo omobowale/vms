@@ -20,7 +20,6 @@ class _VisitorInformationState extends State<VisitorInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: ListView(
         children: [
           TopSection(

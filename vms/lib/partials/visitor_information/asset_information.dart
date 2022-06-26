@@ -27,8 +27,9 @@ class _AssetInformationState extends State<AssetInformation> {
             ),
           ),
           CustomDropDown(
+            onTap: (value) {},
             text: "Asset type",
-            lists: ["Phone", "Laptop", "Traveling bag"],
+            lists: ["Phone", "Laptop", "Traveling bag"].toSet(),
           )
         ],
       ),

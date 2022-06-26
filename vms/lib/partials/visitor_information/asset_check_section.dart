@@ -11,8 +11,20 @@ class AssetCheckSection extends StatefulWidget {
 
 class _AssetCheckSectionState extends State<AssetCheckSection> {
   List<CustomRadioButton> radiolists = [
-    new CustomRadioButton(labelText: "Yes", checked: true, isAvailable: true),
-    new CustomRadioButton(labelText: "No", checked: false, isAvailable: true),
+    new CustomRadioButton(
+      labelText: "Yes",
+      checked: true,
+      checkText: '',
+      isAvailable: true,
+      isClicked: () {},
+    ),
+    new CustomRadioButton(
+      labelText: "No",
+      checkText: "",
+      checked: false,
+      isAvailable: true,
+      isClicked: () {},
+    ),
   ];
 
   @override

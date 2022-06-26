@@ -19,10 +19,6 @@ class _SummaryState extends State<Summary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [],
-        toolbarHeight: 0,
-      ),
       body: ListView(
         children: [
           TopSection(

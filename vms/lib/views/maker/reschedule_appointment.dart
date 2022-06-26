@@ -23,7 +23,6 @@ class _RescheduleAppointmentState extends State<RescheduleAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

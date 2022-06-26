@@ -14,10 +14,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [],
-        toolbarHeight: 0,
-      ),
+     
       body: Container(
         color: Color(0xff174574),
         child: ListView(

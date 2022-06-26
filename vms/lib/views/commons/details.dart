@@ -86,7 +86,7 @@ class _DetailsState extends State<Details> {
                     Divider(),
                     DetailsSummaryLocation(
                       floorNumber: appointment.data?.floorNumber.toString(),
-                      roomNumbers: appointment.data?.roomNumbers,
+                      roomNumbers: appointment.data?.rooms,
                     ),
                     Divider(),
                     DetailsSummaryGuests(guestsList: appointment.data!.guests),

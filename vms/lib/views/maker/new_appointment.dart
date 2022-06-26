@@ -21,7 +21,6 @@ class _NewAppointmentState extends State<NewAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: ListView(
         children: [
           TopSection(
@@ -48,8 +47,12 @@ class _NewAppointmentState extends State<NewAppointment> {
                     .push(MaterialPageRoute(builder: (context) => View()));
               },
               fnTwo: () {
-                print(context.read<AppointmentNotifier>().appointments.length);
-
+                context.read<AppointmentNotifier>().showAppointment(
+                    context.read<AppointmentNotifier>().appointments[0]);
+                print(context
+                    .read<AppointmentNotifier>()
+                    .appointments[0]
+                    .staffName);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AppointmentLocation(),

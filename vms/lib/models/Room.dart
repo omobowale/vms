@@ -1,11 +1,8 @@
 class Room {
   String name;
+  String id;
   final bool checked;
   final bool isAvailable;
 
-  Room({required this.name, required this.checked, required this.isAvailable});
-
-  set setName(String name) {
-    this.name = name;
-  }
+  Room({required this.name, required this.id, required this.checked, required this.isAvailable});
 }
