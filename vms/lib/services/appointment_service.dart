@@ -17,6 +17,7 @@ class AppointmentService {
           var appointment = Appointment(
             id: item["id"],
             visitPurpose: item["visitPurpose"],
+            assetPresent: item["isAssetPresent"],
             guests: item["guests"],
             appointmentType: item["appointmentType"],
             approvalStatus: item["approvalStatus"],
@@ -26,6 +27,7 @@ class AppointmentService {
             location: item["location"],
             floorNumber: item["floorNumber"].toString(),
             rooms: item["roomNumbers"],
+            assets: item["assets"],
             staffImagePath: item["avatar"],
             staffName: item["name"],
             appointmentDate:
@@ -52,6 +54,7 @@ class AppointmentService {
         var appointment = Appointment(
           id: jsonData["id"],
           guests: jsonData["guests"],
+          assetPresent: jsonData["isAssetPresent"],
           visitPurpose: jsonData["visitPurpose"],
           appointmentType: jsonData["appointmentType"],
           approvalStatus: jsonData["approvalStatus"],
@@ -61,6 +64,7 @@ class AppointmentService {
           location: jsonData["location"],
           floorNumber: jsonData["floorNumber"].toString(),
           rooms: jsonData["roomNumbers"],
+          assets: jsonData["assets"],
           staffImagePath: jsonData["avatar"],
           staffName: jsonData["name"],
           appointmentDate:

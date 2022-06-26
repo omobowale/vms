@@ -30,7 +30,7 @@ class CustomRadioGroup extends StatelessWidget {
             children: radiolist.map((customRadioButton) {
               return customRadioButton;
             }).toList(),
-          )
+          ),
         ],
       ),
     );

@@ -3,8 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/asset_present_bool_notifier.dart';
+import 'package:vms/notifiers/assets_notifier.dart';
 import 'package:vms/notifiers/purpose_notifier.dart';
 import 'package:vms/notifiers/rooms_notifier.dart';
+import 'package:vms/notifiers/visitor_types_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
 import 'package:vms/views/login.dart';
 
@@ -26,6 +29,15 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => RoomsNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => VisitorTypeNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AssetPresentBoolNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AssetsNotifier(),
         ),
       ],
       child: MyApp(),

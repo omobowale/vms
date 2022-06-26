@@ -1,6 +1,7 @@
 class Appointment {
   String id;
   String staffName;
+  String assetPresent;
   String location;
   String officiality;
   String appointmentType;
@@ -13,11 +14,13 @@ class Appointment {
   List<dynamic> guests;
   String floorNumber;
   List<dynamic> rooms;
+  List<dynamic> assets;
 
   Appointment({
     required this.id,
     required this.staffName,
     required this.officiality,
+    required this.assetPresent,
     required this.startTime,
     required this.visitPurpose,
     required this.endTime,
@@ -28,6 +31,7 @@ class Appointment {
     required this.floorNumber,
     required this.guests,
     required this.rooms,
+    required this.assets,
     required this.location,
   });
 }

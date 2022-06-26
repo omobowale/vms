@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/views/maker/visitor_information.dart';
-import 'package:vms/models/Room.dart';
+import 'package:vms/models/room.dart';
 import 'package:vms/partials/appointment_location/floor.dart';
 import 'package:vms/views/maker/new_appointment.dart';
 import 'package:vms/partials/appointment_location/location.dart';
@@ -16,7 +18,6 @@ class AppointmentLocation extends StatefulWidget {
 }
 
 class _AppointmentLocationState extends State<AppointmentLocation> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +42,8 @@ class _AppointmentLocationState extends State<AppointmentLocation> {
                   MaterialPageRoute(builder: (context) => NewAppointment()));
             },
             fnTwo: () {
+              context.read<AppointmentNotifier>().showAppointment(
+                  context.read<AppointmentNotifier>().appointments[0]);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => VisitorInformation()));
             },

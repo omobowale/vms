@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_widgets/custom_input_field.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 
-class VisitorDetails extends StatefulWidget {
-  const VisitorDetails({Key? key}) : super(key: key);
-
-  @override
-  State<VisitorDetails> createState() => _VisitorDetailsState();
-}
-
-class _VisitorDetailsState extends State<VisitorDetails> {
+class VisitorDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AppointmentNotifier _appointmentNotifier =
+        Provider.of<AppointmentNotifier>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Column(children: [
@@ -21,10 +18,13 @@ class _VisitorDetailsState extends State<VisitorDetails> {
               Expanded(
                 flex: 10,
                 child: CustomInputField(
-                  onComplete: () {},
+                  onComplete: (value) {
+                    _appointmentNotifier.addVisitorFirstName(
+                        _appointmentNotifier.appointments[0].guests[0], value);
+                  },
                   bordered: false,
-                  hintText: "First name",
-                  labelText: "First name",
+                  hintText: "Enter First Name",
+                  labelText: "First Name",
                 ),
               ),
               Expanded(
@@ -34,9 +34,12 @@ class _VisitorDetailsState extends State<VisitorDetails> {
               Expanded(
                 flex: 10,
                 child: CustomInputField(
-                  onComplete: () {},
+                  onComplete: (value) {
+                     _appointmentNotifier.addVisitorLastName(
+                        _appointmentNotifier.appointments[0].guests[0], value);
+                  },
                   bordered: false,
-                  hintText: "Last name",
+                  hintText: "Enter Last name",
                   labelText: "Last name",
                 ),
               ),
@@ -46,18 +49,24 @@ class _VisitorDetailsState extends State<VisitorDetails> {
         Container(
           margin: EdgeInsets.only(bottom: 10),
           child: CustomInputField(
-            onComplete: () {},
+            onComplete: (value) {
+               _appointmentNotifier.addVisitorPhoneNumber(
+                        _appointmentNotifier.appointments[0].guests[0], value);
+            },
             bordered: false,
-            hintText: "Phone Number",
+            hintText: "Enter Phone Number",
             labelText: "Phone Number",
           ),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 10),
           child: CustomInputField(
-            onComplete: () {},
+            onComplete: (value) {
+               _appointmentNotifier.addVisitorEmail(
+                        _appointmentNotifier.appointments[0].guests[0], value);
+            },
             bordered: false,
-            hintText: "Email",
+            hintText: "Enter Email",
             labelText: "Email",
           ),
         ),

@@ -31,7 +31,7 @@ class _VisitorInformationState extends State<VisitorInformation> {
           Divider(),
           VisitorAddress(),
           Divider(),
-          VisitorDocumentAttachment(),
+          // VisitorDocumentAttachment(),
           Divider(),
           AssetCheckSection(),
           Divider(),

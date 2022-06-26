@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vms/custom_widgets/custom_appointment_requests_card.dart';
-import 'package:vms/models/AppointmentRequest.dart';
+import 'package:vms/models/appointment_request.dart';
 import 'package:vms/partials/appointment_requests/page_title.dart';
 import 'package:vms/partials/appointment_requests/staff_details.dart';
 

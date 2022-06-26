@@ -41,7 +41,13 @@ class CustomInputField extends StatelessWidget {
         keyboardType: TextInputType.multiline,
         decoration: InputDecoration(
           labelText: labelText,
+          labelStyle: TextStyle(
+            color: Colors.black.withOpacity(0.7),
+            fontSize: 17,
+            // fontWeight: FontWeight.w500,
+          ),
           hintText: hintText,
+          hintStyle: TextStyle(color: Palette.LAVENDAR_GREY),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide(

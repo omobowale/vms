@@ -3,7 +3,6 @@ import 'package:vms/custom_classes/palette.dart';
 
 class CustomRadioButton extends StatelessWidget {
   final String labelText;
-  final bool checked;
   final bool isAvailable;
   Function isClicked;
   final String checkText;
@@ -13,7 +12,6 @@ class CustomRadioButton extends StatelessWidget {
       required this.isClicked,
       required this.checkText,
       required this.labelText,
-      required this.checked,
       required this.isAvailable})
       : super(key: key);
 
@@ -29,7 +27,7 @@ class CustomRadioButton extends StatelessWidget {
             padding: EdgeInsets.all(14),
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              boxShadow: !checked
+              boxShadow: !((checkText == labelText))
                   ? [
                       BoxShadow(
                         color: Colors.white,

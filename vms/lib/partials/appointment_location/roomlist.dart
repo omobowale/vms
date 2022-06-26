@@ -4,7 +4,7 @@ import 'package:vms/custom_widgets/custom_check_box.dart';
 import 'package:vms/custom_widgets/custom_drop_down.dart';
 import 'package:vms/custom_widgets/custom_input_label.dart';
 import 'package:vms/data/rooms.dart';
-import 'package:vms/models/Room.dart';
+import 'package:vms/models/room.dart';
 import 'package:vms/models/appointment.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/notifiers/rooms_notifier.dart';

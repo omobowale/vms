@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:vms/data/asset_present_bools.dart';
 import 'package:vms/data/floors.dart';
 import 'package:vms/data/locations.dart';
 import 'package:vms/data/purposes_of_visit.dart';
 import 'package:vms/data/rooms.dart';
-import 'package:vms/models/Room.dart';
+import 'package:vms/models/asset.dart';
+import 'package:vms/models/room.dart';
 import 'package:vms/models/appointment.dart';
+import 'package:vms/models/visitor.dart';
 import 'package:vms/notifiers/purpose_notifier.dart';
 import 'package:vms/partials/new_appointment/purpose_of_visit.dart';
 
@@ -22,20 +25,29 @@ class AppointmentNotifier with ChangeNotifier {
   }
 
   void addEmptyAppointment() {
+    Visitor newVisitor = Visitor(
+        id: "1",
+        firstName: "",
+        lastName: "",
+        address: "",
+        email: "",
+        phoneNumber: "");
     _appointmentsList.add(
       new Appointment(
         id: _appointmentsList.length.toString(),
         staffName: "",
         officiality: "",
         startTime: DateTime.now(),
+        assetPresent: "",
         endTime: DateTime.now(),
         appointmentType: "",
         approvalStatus: "",
         staffImagePath: "",
         appointmentDate: DateTime.now(),
         floorNumber: floors[0],
-        guests: [],
+        guests: [newVisitor],
         rooms: [],
+        assets: [],
         location: locations[0],
         visitPurpose: purposesOfVisit[0],
       ),
@@ -48,6 +60,11 @@ class AppointmentNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  void addAssetPresentBool(String yes_no) {
+    _appointmentsList[_appointmentsList.length - 1].assetPresent = yes_no;
+    notifyListeners();
+  }
+
   void addVisitorType(String visitorType) {
     _appointmentsList[_appointmentsList.length - 1].appointmentType =
         visitorType;
@@ -56,6 +73,36 @@ class AppointmentNotifier with ChangeNotifier {
 
   void addHostName(String hostName) {
     _appointmentsList[_appointmentsList.length - 1].staffName = hostName;
+    notifyListeners();
+  }
+
+  void addVisitorId(Visitor visitor, String id) {
+    visitor.id = id;
+    notifyListeners();
+  }
+
+  void addVisitorFirstName(Visitor visitor, String firstName) {
+    visitor.firstName = firstName;
+    notifyListeners();
+  }
+
+  void addVisitorLastName(Visitor visitor, String lastName) {
+    visitor.lastName = lastName;
+    notifyListeners();
+  }
+
+  void addVisitorEmail(Visitor visitor, String email) {
+    visitor.email = email;
+    notifyListeners();
+  }
+
+  void addVisitorAddress(Visitor visitor, String address) {
+    visitor.address = address;
+    notifyListeners();
+  }
+
+  void addVisitorPhoneNumber(Visitor visitor, String phoneNumber) {
+    visitor.phoneNumber = phoneNumber;
     notifyListeners();
   }
 
@@ -91,6 +138,20 @@ class AppointmentNotifier with ChangeNotifier {
       if (existingRooms.length < 3) {
         _appointmentsList[_appointmentsList.length - 1].rooms.add(room);
       }
+    }
+
+    notifyListeners();
+  }
+
+  void addAsset(Asset asset) {
+    var existingAssets = _appointmentsList[_appointmentsList.length - 1].assets;
+    var a =
+        existingAssets.firstWhere((_) => asset.id == _.id, orElse: () => null);
+
+    if (a != null) {
+      _appointmentsList[_appointmentsList.length - 1].assets.remove(a);
+    } else {
+      _appointmentsList[_appointmentsList.length - 1].assets.add(asset);
     }
 
     notifyListeners();

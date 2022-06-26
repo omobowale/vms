@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vms/custom_widgets/custom_input_label.dart';
 import 'package:vms/custom_widgets/custom_radio_button.dart';
-import 'package:vms/custom_widgets/custom_radio_group.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/asset_present_bool_notifier.dart';
 
-class AssetCheckSection extends StatefulWidget {
-  const AssetCheckSection({Key? key}) : super(key: key);
-
-  @override
-  State<AssetCheckSection> createState() => _AssetCheckSectionState();
-}
-
-class _AssetCheckSectionState extends State<AssetCheckSection> {
-  List<CustomRadioButton> radiolists = [
-    new CustomRadioButton(
-      labelText: "Yes",
-      checked: true,
-      checkText: '',
-      isAvailable: true,
-      isClicked: () {},
-    ),
-    new CustomRadioButton(
-      labelText: "No",
-      checkText: "",
-      checked: false,
-      isAvailable: true,
-      isClicked: () {},
-    ),
-  ];
+class AssetCheckSection extends StatelessWidget {
+  List<CustomRadioButton> radiolists = [];
 
   @override
   Widget build(BuildContext context) {
+    AppointmentNotifier _appointmentNotifier =
+        Provider.of<AppointmentNotifier>(context);
+    AssetPresentBoolNotifier _assetPresentBoolNotifier =
+        Provider.of<AssetPresentBoolNotifier>(context);
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: CustomRadioGroup(
-          labelText: "Will visitor be with assets?", radiolist: radiolists),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomInputLabel(labelText: "Will asset be present?"),
+          ..._assetPresentBoolNotifier.allAssetPresentBools
+              .map((e) => CustomRadioButton(
+                  isClicked: (value) {
+                    _appointmentNotifier.addAssetPresentBool(value);
+                    _assetPresentBoolNotifier
+                        .addCurrentlySelectedAssetPresentBool(
+                            e.isAssetPresentBool);
+                  },
+                  checkText: _appointmentNotifier.appointments[0].assetPresent,
+                  labelText: e.isAssetPresent,
+                  isAvailable: true))
+              .toList(),
+        ],
+      ),
     );
   }
 }

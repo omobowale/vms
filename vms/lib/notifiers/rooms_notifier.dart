@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:vms/data/rooms.dart';
-import 'package:vms/models/Room.dart';
+import 'package:vms/models/room.dart';
 
 class RoomsNotifier with ChangeNotifier {
   List<Room> get allrooms {
