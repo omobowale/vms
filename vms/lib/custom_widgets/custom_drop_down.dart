@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/helperfunctions/custom_string_manipulations.dart';
+import 'package:vms/models/group_head.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/notifiers/purpose_notifier.dart';
 
@@ -21,11 +23,20 @@ class CustomDropDown extends StatefulWidget {
 }
 
 class _CustomDropDownState extends State<CustomDropDown> {
+  late String selectedValue;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    selectedValue = widget.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      value: selectedValue,
       decoration: InputDecoration(
-        labelText: widget.text,
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 2, color: Palette.LAVENDAR_GREY),
           borderRadius: BorderRadius.circular(10),
@@ -37,16 +48,17 @@ class _CustomDropDownState extends State<CustomDropDown> {
       ),
       icon: Icon(Icons.keyboard_arrow_down),
       items: widget.lists.map((value) {
+        String actualValue = (value is GroupHead) ? value.fullName : value;
         return DropdownMenuItem<String>(
-          onTap: () {
-            widget.onTap(value);
-          },
-          value: value,
-          child: Text(value),
+          value: actualValue,
+          child: Text(actualValue),
         );
       }).toList(),
-      onChanged: (_) {
-        // widget.onTap(_);
+      onChanged: (value) {
+        setState(() {
+          selectedValue = value.toString();
+        });
+        widget.onTap(value);
       },
     );
   }

@@ -1,37 +1,94 @@
+import 'package:vms/models/group_head.dart';
+import 'package:vms/models/host.dart';
+import 'package:vms/models/room.dart';
+import 'package:vms/models/visitor.dart';
+
 class Appointment {
   String id;
-  String staffName;
-  String assetPresent;
+  Host host;
   String location;
-  String officiality;
+  String visitType;
   String appointmentType;
   DateTime startTime;
   DateTime endTime;
   DateTime appointmentDate;
-  String staffImagePath;
-  String approvalStatus;
-  String visitPurpose;
+  int appointmentStatus;
+  String meetingRoom;
   List<dynamic> guests;
   String floorNumber;
   List<dynamic> rooms;
-  List<dynamic> assets;
+  GroupHead groupHead;
+  String? purposeOfReschedule;
 
-  Appointment({
-    required this.id,
-    required this.staffName,
-    required this.officiality,
-    required this.assetPresent,
-    required this.startTime,
-    required this.visitPurpose,
-    required this.endTime,
-    required this.appointmentType,
-    required this.approvalStatus,
-    required this.staffImagePath,
-    required this.appointmentDate,
-    required this.floorNumber,
-    required this.guests,
-    required this.rooms,
-    required this.assets,
-    required this.location,
-  });
+  Appointment(
+      {required this.id,
+      required this.host,
+      required this.visitType,
+      required this.startTime,
+      required this.groupHead,
+      required this.endTime,
+      required this.appointmentType,
+      required this.appointmentStatus,
+      required this.appointmentDate,
+      required this.floorNumber,
+      required this.guests,
+      required this.meetingRoom,
+      required this.rooms,
+      required this.location,
+      this.purposeOfReschedule});
+
+  void set setStartTime(DateTime time) {
+    this.startTime = time;
+  }
+
+  void set setEndTime(DateTime time) {
+    this.endTime = time;
+  }
+
+  void set setAppointmentDate(DateTime date) {
+    this.appointmentDate = date;
+  }
+
+  @override
+  String toString() {
+    return this.toJson().toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "host": host,
+      "visitType": visitType,
+      "startTime": startTime,
+      "endTime": endTime,
+      "appointmentType": appointmentType,
+      "appointmentStatus": appointmentStatus,
+      "appointmentDate": appointmentDate,
+      "floorNumber": floorNumber,
+      "meetingRoom": meetingRoom,
+      "guests": guests,
+      "roomNumbers": rooms,
+      "location": location,
+      "groupHead": groupHead
+    };
+  }
+
+  dynamic myEncode(dynamic item) {
+    if (item is DateTime) {
+      return item.toIso8601String();
+    }
+    if (item is Visitor) {
+      return item.toMap();
+    }
+    if (item is Room) {
+      return item.toMap();
+    }
+    if (item is GroupHead) {
+      return item.toMap();
+    }
+    if (item is Host) {
+      return item.toJson();
+    }
+    return item;
+  }
 }

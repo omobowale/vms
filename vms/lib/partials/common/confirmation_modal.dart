@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
+import 'package:vms/views/view.dart';
 
 class ConfirmationModal extends StatelessWidget {
-  const ConfirmationModal({Key? key}) : super(key: key);
+  final String confirmationTextTitle;
+  final String confirmationTextDescription;
+  final Function acceptFunction;
+  final Function declineFunction;
+  const ConfirmationModal({
+    Key? key,
+    required this.confirmationTextTitle,
+    required this.confirmationTextDescription,
+    required this.acceptFunction,
+    required this.declineFunction,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +44,7 @@ class ConfirmationModal extends StatelessWidget {
             ),
             margin: EdgeInsets.only(bottom: 10),
             child: Text(
-              "Are you sure?",
+              confirmationTextTitle,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 17,
@@ -44,14 +57,18 @@ class ConfirmationModal extends StatelessWidget {
               right: 25,
             ),
             child: Text(
-              "You're about to cancel this process, you will have to restart it again.",
+              confirmationTextDescription,
             ),
           ),
           BottomFixedSection(
-            leftText: "Back",
-            rightText: "Cancel",
-            fnOne: () {},
-            fnTwo: () {},
+            leftText: "No",
+            rightText: "Yes",
+            fnOne: () {
+              declineFunction();
+            },
+            fnTwo: () {
+              acceptFunction();
+            },
           )
         ],
       ),

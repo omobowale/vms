@@ -23,7 +23,7 @@ class _ModuleCardState extends State<ModuleCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onTap(context);
+        widget.onTap();
       },
       child: Container(
         child: Card(

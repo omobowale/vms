@@ -1,18 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/models/screen_arguments.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/appointment_status_types_notifier.dart';
 import 'package:vms/notifiers/asset_present_bool_notifier.dart';
 import 'package:vms/notifiers/assets_notifier.dart';
+import 'package:vms/notifiers/group_heads_notifier.dart';
+import 'package:vms/notifiers/login_logout_notifier.dart';
+import 'package:vms/notifiers/user_notifier.dart';
 import 'package:vms/notifiers/purpose_notifier.dart';
 import 'package:vms/notifiers/rooms_notifier.dart';
-import 'package:vms/notifiers/visitor_types_notifier.dart';
+import 'package:vms/notifiers/time_selection_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
+import 'package:vms/services/enum_service.dart';
+import 'package:vms/services/group_head_service.dart';
+import 'package:vms/services/host_name_service.dart';
+import 'package:vms/services/login_service.dart';
+import 'package:vms/views/checker/appointment_requests.dart';
+import 'package:vms/views/commons/details.dart';
+import 'package:vms/views/home.dart';
 import 'package:vms/views/login.dart';
+import 'package:vms/views/maker/appointment_creation_success.dart';
+import 'package:vms/views/maker/appointment_location.dart';
+import 'package:vms/views/maker/appointment_updated_success.dart';
+import 'package:vms/views/maker/new_appointment.dart';
+import 'package:vms/views/maker/reschedule_appointment.dart';
+import 'package:vms/views/maker/summary.dart';
+import 'package:vms/views/maker/visitor_information.dart';
+import 'package:vms/views/view.dart';
 
 void setUpLocator() {
+  //Register your services here
   GetIt.I.registerLazySingleton(() => AppointmentService());
+  GetIt.I.registerLazySingleton(() => LoginService());
+  GetIt.I.registerLazySingleton(() => EnumService());
+  GetIt.I.registerLazySingleton(() => GroupHeadService());
+  GetIt.I.registerLazySingleton(() => HostNameService());
 }
 
 void main() {
@@ -31,13 +57,25 @@ void main() {
           create: (_) => RoomsNotifier(),
         ),
         ChangeNotifierProvider(
-          create: (_) => VisitorTypeNotifier(),
-        ),
-        ChangeNotifierProvider(
           create: (_) => AssetPresentBoolNotifier(),
         ),
         ChangeNotifierProvider(
           create: (_) => AssetsNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TimeSelectionNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AppointmentStatusNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => GroupHeadsNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LoginLogoutNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserNotifier(),
         ),
       ],
       child: MyApp(),
@@ -66,14 +104,51 @@ class MyApp extends StatelessWidget {
         primarySwatch: Palette.CUSTOM_WHITE,
         fontFamily: "GeneralSans",
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 15,
-          title: const Text(""),
-        ),
-        body: const Login(),
-      ),
+      home: Login(),
+      initialRoute: '/login',
+      onGenerateRoute: (settings) {
+        // If you push the PassArguments route
+        if (settings.name == Details.routeName) {
+          // Cast the arguments to the correct
+          // type: ScreenArguments.
+          print("settings.arguments " + settings.arguments.toString());
+          final args = settings.arguments as ScreenArguments;
+
+          // Then, extract the required data from
+          // the arguments and pass the data to the
+          // correct screen.
+          return MaterialPageRoute(
+            builder: (context) {
+              return Details(
+                id: args.id,
+                isApproved: args.isApproved,
+              );
+            },
+          );
+        }
+        // The code only supports
+        // PassArgumentsScreen.routeName right now.
+        // Other values need to be implemented if we
+        // add them. The assertion here will help remind
+        // us of that higher up in the call stack, since
+        // this assertion would otherwise fire somewhere
+        // in the framework.
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
+      },
+      routes: {
+        '/login': (context) => Login(),
+        '/home': (context) => Home(),
+        '/view': (context) => View(),
+        '/new_appointment': (context) => NewAppointment(),
+        '/reschedule_appointment': (context) => RescheduleAppointment(),
+        '/summary': (context) => Summary(),
+        '/reschedule_appointment': (context) => RescheduleAppointment(),
+        '/appointment_requests': (context) => AppointmentRequests(),
+        '/appointment_location': (context) => AppointmentLocation(),
+        '/appointment_created': (context) => AppointmentCreationSuccess(),
+        '/appointment_updated': (context) => AppointmentUpdatedSuccess(),
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:calendar_strip/calendar_strip.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/views/home.dart';
@@ -7,8 +8,12 @@ import 'package:vms/views/home.dart';
 class CustomCalendarStrip extends StatefulWidget {
   final Function onSelect;
   final DateTime selectedDate;
+  final List<DateTime> markedDates;
   CustomCalendarStrip(
-      {Key? key, required this.selectedDate, required this.onSelect})
+      {Key? key,
+      required this.selectedDate,
+      required this.onSelect,
+      required this.markedDates})
       : super(key: key);
 
   @override
@@ -16,14 +21,15 @@ class CustomCalendarStrip extends StatefulWidget {
 }
 
 class _CustomCalendarStripState extends State<CustomCalendarStrip> {
-  DateTime startDate = DateTime.now().add(Duration(days: 0));
-  DateTime endDate = DateTime.now().add(Duration(days: 7));
+  DateTime startDate = DateTime.now().subtract(Duration(days: 1000));
+  DateTime endDate = DateTime.now().add(Duration(days: 10));
   // DateTime selectedDate = DateTime.now();
-  List<DateTime> markedDates = [
-    DateTime.now().subtract(Duration(days: 1)),
-    DateTime.now().subtract(Duration(days: 2)),
-    DateTime.now().add(Duration(days: 4))
-  ];
+  List<DateTime> markedDates = [];
+
+  @override
+  initState() {
+    markedDates = widget.markedDates;
+  }
 
   onWeekSelect(data) {
     if (data != null) {
@@ -92,13 +98,9 @@ class _CustomCalendarStripState extends State<CustomCalendarStrip> {
         margin: EdgeInsets.only(left: 1, right: 1),
         width: 7,
         height: 7,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: Palette.FBN_BLUE),
       ),
-      Container(
-        width: 7,
-        height: 7,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-      )
     ]);
   }
 

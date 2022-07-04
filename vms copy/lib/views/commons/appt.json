@@ -1,0 +1,53 @@
+[
+    {
+     "createdAt": "2022-06-28T03:52:45.509Z",
+     "name": "Emma D'Amore",
+     "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/63.jpg",
+     "appointmentType": "explicabo",
+     "officiality": "officiality 21",
+     "startTime": "2022-06-28T03:52:45.509Z",
+     "endTime": "2022-06-28T04:52:45.509Z",
+     "appointmentStatus": "appointmentStatus 21",
+     "guests": [],
+     "floorNumber": 13,
+     "roomNumbers": [],
+     "appointmentDate": "2022-06-28T03:52:45.509Z",
+     "visitPurpose": "visitPurpose 21",
+     "assets": [],
+     "id": "21"
+    },
+    {
+     "createdAt": "2022-06-28T06:51:54.290Z",
+     "name": "Mr. John Willms",
+     "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/860.jpg",
+     "appointmentType": "non",
+     "officiality": "officiality 22",
+     "startTime": "2022-06-28T06:51:54.290Z",
+     "endTime": "2022-06-28T07:51:54.290Z",
+     "appointmentStatus": "appointmentStatus 22",
+     "guests": [],
+     "floorNumber": 96,
+     "roomNumbers": [],
+     "appointmentDate": "2022-06-28T06:51:54.290Z",
+     "visitPurpose": "visitPurpose 22",
+     "assets": [],
+     "id": "22"
+    },
+    {
+     "createdAt": "2022-06-28T01:17:02.124Z",
+     "name": "Rickey Will",
+     "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1122.jpg",
+     "appointmentType": "qui",
+     "officiality": "officiality 23",
+     "startTime": "2022-06-28T01:17:02.124Z",
+     "endTime": "2022-06-28T01:18:02.124Z",
+     "appointmentStatus": "appointmentStatus 23",
+     "guests": [],
+     "floorNumber": 84,
+     "roomNumbers": [],
+     "appointmentDate": "2022-06-28T01:17:02.124Z",
+     "visitPurpose": "visitPurpose 23",
+     "assets": [],
+     "id": "23"
+    }
+   ]

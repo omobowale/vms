@@ -12,16 +12,25 @@ class AppointmentDayDate extends StatelessWidget {
     return Container(
       child: Row(children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Text(
             CustomDateFormatter.getWeekDay(selectedDate),
-            style:
-                TextStyle(fontWeight: FontWeight.w500, color: Palette.FBN_BLUE),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Palette.FBN_BLUE,
+              fontSize: 16,
+            ),
           ),
+        ),
+        SizedBox(
+          width: 10,
         ),
         Container(
           child: Text(
             CustomDateFormatter.getFormatedDate(selectedDate),
+            style: TextStyle(
+                color: Colors.grey.withOpacity(0.5),
+                fontWeight: FontWeight.w500,
+                fontSize: 16),
           ),
         ),
       ]),

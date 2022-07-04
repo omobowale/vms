@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/views/maker/summary.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
 import 'package:vms/partials/common/top.dart';
-import 'package:vms/partials/visitor_information/asset_check_section.dart';
-import 'package:vms/partials/visitor_information/asset_information.dart';
 import 'package:vms/partials/visitor_information/visitor_address.dart';
 import 'package:vms/partials/visitor_information/visitor_details.dart';
-import 'package:vms/partials/visitor_information/visitor_document_attachment.dart';
 import 'package:vms/views/maker/appointment_location.dart';
 
 class VisitorInformation extends StatefulWidget {
@@ -28,14 +27,7 @@ class _VisitorInformationState extends State<VisitorInformation> {
           ),
           Divider(),
           VisitorDetails(),
-          Divider(),
           VisitorAddress(),
-          Divider(),
-          // VisitorDocumentAttachment(),
-          Divider(),
-          AssetCheckSection(),
-          Divider(),
-          AssetInformation(),
           Divider(),
           BottomFixedSection(
               leftText: "Back",
@@ -45,8 +37,20 @@ class _VisitorInformationState extends State<VisitorInformation> {
                     builder: (context) => AppointmentLocation()));
               },
               fnTwo: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Summary()));
+                context.read<AppointmentNotifier>().showAppointment(
+                    context.read<AppointmentNotifier>().appointments[0]);
+
+                context.read<AppointmentNotifier>().visitorInformationValid();
+                if (context
+                    .read<AppointmentNotifier>()
+                    .allVisitorInformationErrors
+                    .isEmpty) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Summary(),
+                    ),
+                  );
+                }
               }),
         ],
       ),

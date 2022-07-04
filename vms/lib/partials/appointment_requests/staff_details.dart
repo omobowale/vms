@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:vms/models/host.dart';
 
 class StaffDetails extends StatelessWidget {
-  final String staffName;
+  final Host host;
   final String staffImagePath;
 
   const StaffDetails({
     Key? key,
     required this.staffImagePath,
-    required this.staffName,
+    required this.host,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("host ${host}");
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 6),
       child: Row(
@@ -38,7 +40,7 @@ class StaffDetails extends StatelessWidget {
           ),
           Container(
             child: Text(
-              staffName,
+              host.username,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:vms/custom_classes/palette.dart';
 
 class CustomSingleLineButton extends StatelessWidget {
   final String text;
   final Function fn;
   final Color backgroundColor;
   final Color textColor;
+  final bool isLoading;
 
   const CustomSingleLineButton({
     Key? key,
     required this.text,
+    this.isLoading = false,
     required this.backgroundColor,
     required this.textColor,
     required this.fn,
@@ -34,13 +37,22 @@ class CustomSingleLineButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        child: isLoading
+            ? Container(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  color: Palette.CUSTOM_WHITE,
+                  strokeWidth: 4,
+                ),
+              )
+            : Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
         onPressed: () {
           fn();
         },

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/partials/appointment_location/room.dart';
 import 'package:vms/views/maker/visitor_information.dart';
-import 'package:vms/models/room.dart';
 import 'package:vms/partials/appointment_location/floor.dart';
 import 'package:vms/views/maker/new_appointment.dart';
 import 'package:vms/partials/appointment_location/location.dart';
-import 'package:vms/partials/appointment_location/roomlist.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
 import 'package:vms/partials/common/top.dart';
 
@@ -20,6 +19,8 @@ class AppointmentLocation extends StatefulWidget {
 class _AppointmentLocationState extends State<AppointmentLocation> {
   @override
   Widget build(BuildContext context) {
+    AppointmentNotifier _appointmentNotifier =
+        Provider.of<AppointmentNotifier>(context);
     return Scaffold(
       body: ListView(
         children: [
@@ -32,7 +33,9 @@ class _AppointmentLocationState extends State<AppointmentLocation> {
             labelText: "Floor",
           ),
           Divider(),
-          RoomsList(),
+          Room(onComplete: (value) {
+            _appointmentNotifier.addMeetingRoom(value);
+          }),
           Divider(),
           BottomFixedSection(
             leftText: "Back",
@@ -44,8 +47,18 @@ class _AppointmentLocationState extends State<AppointmentLocation> {
             fnTwo: () {
               context.read<AppointmentNotifier>().showAppointment(
                   context.read<AppointmentNotifier>().appointments[0]);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VisitorInformation()));
+
+              context.read<AppointmentNotifier>().locationValid();
+              if (context
+                  .read<AppointmentNotifier>()
+                  .allLocationErrors
+                  .isEmpty) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => VisitorInformation(),
+                  ),
+                );
+              }
             },
           )
         ],

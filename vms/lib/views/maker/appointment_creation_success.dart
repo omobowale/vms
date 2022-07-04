@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_widgets/custom_info_display.dart';
 import 'package:vms/custom_widgets/custom_single_line_button.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/views/view.dart';
 
 class AppointmentCreationSuccess extends StatelessWidget {
@@ -16,10 +18,9 @@ class AppointmentCreationSuccess extends StatelessWidget {
           "Your appointment request has been submitted, you will receive a notification once your Supervisor receives it",
       buttonText: "Done",
       buttonFunction: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => View(
-                  
-                )));
+        context.read<AppointmentNotifier>().setIsCreating = false;
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => View()));
       },
     ));
   }

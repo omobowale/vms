@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
 
 class NoAppointment extends StatelessWidget {
   final DateTime selectedDate;
@@ -14,14 +16,17 @@ class NoAppointment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 5, top: 22),
+      margin: EdgeInsets.only(left: 5, top: 5),
       child: Column(
         children: [
           AppointmentDayDate(
             selectedDate: selectedDate,
           ),
+          SizedBox(
+            height: 10,
+          ),
           Container(
-            margin: EdgeInsets.only(left: 12, right: 12, bottom: 20, top: 12),
+            // margin: EdgeInsets.only(left: 12, right: 12, bottom: 20, top: 0),
             padding: EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: Color(0xffF0F4FA),
@@ -48,8 +53,15 @@ class NoAppointment extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  child: Icon(Icons.add),
-                )
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/new_appointment');
+                    },
+                    child: Icon(
+                      Icons.add,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

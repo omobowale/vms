@@ -3,12 +3,17 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
+import 'package:vms/custom_widgets/custom_bottom_navigation_bar.dart';
 import 'package:vms/custom_widgets/custom_calendar_strip_section.dart';
+import 'package:vms/custom_widgets/custom_floating_action_button.dart';
 import 'package:vms/custom_widgets/custom_no_appointment.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/appointment.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/login_logout_notifier.dart';
+import 'package:vms/notifiers/user_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
+import 'package:vms/views/login.dart';
 import 'package:vms/views/maker/new_appointment.dart';
 import 'package:vms/partials/view/appointment_list.dart';
 
@@ -22,15 +27,22 @@ class View extends StatefulWidget {
 class _ViewState extends State<View> {
   AppointmentService get service => GetIt.I<AppointmentService>();
   bool isLoading = false;
+  bool isGH = false;
+  int _selectedIndex = 0;
   DateTime selectedDate = DateTime.now();
 
   late APIResponse<List<Appointment>> _appointmentList;
+  List<Appointment> appointmentListData = [];
+  List<DateTime> markedDates = [];
+
+  UserNotifier userNotifier = UserNotifier();
 
   @override
   void initState() {
     _appointmentList =
         new APIResponse<List<Appointment>>(data: [], error: false);
-    _fetchAppointments();
+
+    _fetchAppointmentForDay();
     // TODO: implement initState
     super.initState();
   }
@@ -41,31 +53,41 @@ class _ViewState extends State<View> {
         selectedDate = data;
       });
       print("Selected Date -> $data");
+      _fetchAppointmentForDay();
     }
   }
 
-  _fetchAppointments() async {
+  _fetchAppointmentForDay() async {
+    _fetchAppointmentsAndUserRole().then((_) {
+      userNotifier.isGH().then((value) {
+        print("user is GH: " + value.toString());
+
+        setState(() {
+          isLoading = false;
+          isGH = value;
+          appointmentListData = AppointmentNotifier.fetchAppointmentForDay(
+              _appointmentList.data ?? [], selectedDate);
+          markedDates =
+              AppointmentNotifier.getMarkedDates(_appointmentList.data ?? []);
+        });
+      });
+    });
+  }
+
+  _fetchAppointmentsAndUserRole() async {
     setState(() {
       isLoading = true;
     });
 
     _appointmentList = await service.getAppointments();
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Palette.FBN_BLUE,
-              ),
-            )
-          : ListView(
+    bool isLoggedIn = context.read<LoginLogoutNotifier>().isLoggedIn;
+    return !isLoading
+        ? Scaffold(
+            body: ListView(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,77 +95,39 @@ class _ViewState extends State<View> {
                     CustomCalendarStrip(
                       onSelect: onSelect,
                       selectedDate: selectedDate,
+                      markedDates: markedDates,
                     ),
-                    AppointmentDayDate(selectedDate: selectedDate),
-                    AppointmentList(
-                        appointmentList: _appointmentList.data ?? []),
-                    NoAppointment(
-                      selectedDate: selectedDate,
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                      child: appointmentListData.length > 0
+                          ? Column(
+                              children: [
+                                AppointmentDayDate(selectedDate: selectedDate),
+                                AppointmentList(
+                                    appointmentList: appointmentListData),
+                              ],
+                            )
+                          : NoAppointment(
+                              selectedDate: selectedDate,
+                            ),
                     ),
                   ],
                 ),
               ],
             ),
-      bottomNavigationBar: new BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Palette.FBN_BLUE,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: <BottomNavigationBarItem>[
-          new BottomNavigationBarItem(
-            label: 'Home',
-            icon: ImageIcon(
-              AssetImage("assets/images/navigation_home_icon.png"),
-              color: Palette.CUSTOM_WHITE,
+            bottomNavigationBar: CustomBottomNavigationBar(
+              isGH: isGH,
             ),
-          ),
-          new BottomNavigationBarItem(
-            label: 'Folder',
-            icon: ImageIcon(
-              AssetImage("assets/images/navigation_folder_icon.png"),
-              color: Palette.CUSTOM_WHITE,
-            ),
-          ),
-          new BottomNavigationBarItem(
-            label: 'Notification',
-            icon: ImageIcon(
-              AssetImage("assets/images/navigation_notification_icon.png"),
-              color: Palette.CUSTOM_WHITE,
-            ),
-          ),
-          new BottomNavigationBarItem(
-            label: 'Four',
-            icon: Text(""),
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: Container(
-        height: 70,
-        width: 70,
-        child: Material(
-          type: MaterialType.transparency,
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: Palette.CUSTOM_WHITE, width: 5.0),
-              color: Palette.CUSTOM_YELLOW,
-              shape: BoxShape.circle,
-            ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(500.0),
-              onTap: () {
-                context.read<AppointmentNotifier>().addEmptyAppointment();
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => NewAppointment()));
-              },
-              child: Icon(
-                Icons.add,
-                //size: 50,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.endDocked,
+            floatingActionButton: CustomFloatingActionButton(),
+          )
+        : Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Palette.FBN_BLUE,
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }

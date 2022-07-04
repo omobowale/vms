@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vms/custom_widgets/custom_module_card.dart';
 import 'package:vms/data/modules.dart';
 import 'package:vms/views/view.dart';
@@ -13,6 +14,7 @@ class HomeBodySection extends StatefulWidget {
 class _HomeBodySectionState extends State<HomeBodySection> {
   @override
   Widget build(BuildContext context) {
+    print("home");
     return Container(
       child: GridView.count(
         crossAxisCount: 2,
@@ -26,7 +28,10 @@ class _HomeBodySectionState extends State<HomeBodySection> {
                 moduleId: module.id,
                 moduleName: module.moduleName,
                 moduleIconPath: module.moduleIconPath,
-                onTap: module.onTap);
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => View()));
+                });
           }).toList()
         ],
       ),
