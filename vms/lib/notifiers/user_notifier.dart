@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:vms/data/rooms.dart';
+import 'package:vms/models/group_head.dart';
 import 'package:vms/models/room.dart';
 import 'package:vms/models/user.dart';
 import 'package:vms/notifiers/login_logout_notifier.dart';
@@ -8,9 +9,29 @@ class UserNotifier with ChangeNotifier {
   LoginLogoutNotifier loginLogoutNotifier = LoginLogoutNotifier();
   List<dynamic> userRoles = [];
   final GH_ROLE = "GH";
+  bool userIsGH = false;
+  String ghId = "";
+  GroupHead gh = GroupHead.emptyOne();
 
   void set setUserRoles(List<dynamic> roles) {
     userRoles = roles;
+    notifyListeners();
+  }
+
+  bool get isUserGH => userIsGH;
+
+  void set setUserIsGH(bool isGH) {
+    userIsGH = isGH;
+    notifyListeners();
+  }
+
+  void set setGh(GroupHead gh) {
+    gh = gh;
+    notifyListeners();
+  }
+
+  void set setGhId(String ghId) {
+    ghId = ghId;
     notifyListeners();
   }
 
@@ -20,39 +41,37 @@ class UserNotifier with ChangeNotifier {
     User user = User.fromJson(userDetails as Map<String, dynamic>);
     if (user != null) {
       setUserRoles = user.roles;
+      setUserIsGH = isGH();
+      setGhId = getGHId();
       return user.roles;
     }
 
     return [];
   }
 
-  Future<bool> isGH() {
-    return getAndSetUserRoles().then((value) {
-      try {
-        var role = value.firstWhere((element) => element["name"] == GH_ROLE);
-        print("returned role: " + role.toString());
-        if (role != null && role.isNotEmpty) {
-          return true;
-        }
-        return false;
-      } on StateError {
-        return false;
+  bool isGH() {
+    try {
+      var role = userRoles.firstWhere((element) => element["name"] == GH_ROLE);
+      print("returned role: " + role.toString());
+      if (role != null && role.isNotEmpty) {
+        return true;
       }
-    });
+      return false;
+    } on StateError {
+      return false;
+    }
   }
 
-  Future<String> getGHId() {
-    return getAndSetUserRoles().then((value) {
-      try {
-        var role = value.firstWhere((element) => element["name"] == GH_ROLE);
-        print("returned role: " + role.toString());
-        if (role != null && role.isNotEmpty) {
-          return role["id"];
-        }
-        return "";
-      } on StateError {
-        return "";
+  String getGHId() {
+    try {
+      var role = userRoles.firstWhere((element) => element["name"] == GH_ROLE);
+      print("returned role: " + role.toString());
+      if (role != null && role.isNotEmpty) {
+        return role["id"];
       }
-    });
+      return "";
+    } on StateError {
+      return "";
+    }
   }
 }

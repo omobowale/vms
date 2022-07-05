@@ -7,6 +7,7 @@ import 'package:vms/helperfunctions/enumerationExtraction.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/enumeration.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/login_logout_notifier.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
 import 'package:vms/partials/new_appointment/date_time.dart';
 import 'package:vms/partials/new_appointment/group_head_search.dart';
@@ -38,29 +39,14 @@ class _NewAppointmentState extends State<NewAppointment> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _enumList = new APIResponse<List<Enumeration>>(data: [], error: false);
-
-    setState(() {
-      visitTypeLoading = true;
-    });
-
-    getAndSetEnumeration("visitTypeEnum").then((value) {
-      setState(() {
-        visitTypeLoading = false;
-        visitTypesList = value;
-      });
-    });
-
-    getAndSetEnumeration("visitorTypeEnum").then((value) {
-      setState(() {
-        visitorTypeLoading = false;
-        visitorTypesList = value;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    visitTypesList = getAndSetEnumeration(
+        context.read<LoginLogoutNotifier>().allEnums, "visitTypeEnum");
+    visitorTypesList = getAndSetEnumeration(
+        context.read<LoginLogoutNotifier>().allEnums, "visitorTypeEnum");
     //This will begin a new process if it has not already begun
     context.read<AppointmentNotifier>().addEmptyAppointment();
     return Scaffold(

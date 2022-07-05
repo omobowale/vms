@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:vms/custom_widgets/custom_appointment_day_date.dart';
 import 'package:vms/custom_widgets/custom_appointment_list_item.dart';
 import 'package:vms/data/appointment_statuses.dart';
@@ -10,6 +11,7 @@ import 'package:vms/helperfunctions/enumerationExtraction.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/appointment.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/login_logout_notifier.dart';
 import 'package:vms/services/appointment_service.dart';
 
 class AppointmentList extends StatefulWidget {
@@ -28,12 +30,10 @@ class _AppointmentListState extends State<AppointmentList> {
   @override
   void initState() {
     // TODO: implement initState
-    getAndSetEnumeration("appointmentStatusEnum").then((value) {
-      setState(() {
-        print("value: ${value}");
-        appointmentStatuses = value;
-      });
-    });
+    LoginLogoutNotifier _loginLogoutNotifier =
+        Provider.of<LoginLogoutNotifier>(context, listen: false);
+    appointmentStatuses = getAndSetEnumeration(
+        _loginLogoutNotifier.allEnums, "appointmentStatusEnum");
   }
 
   bool getIsApproved(
@@ -41,6 +41,20 @@ class _AppointmentListState extends State<AppointmentList> {
     var x = selectedAppointmentStatusEnum(appointmentStatus, statuses);
     if (x.isNotEmpty) {
       if (x["name"].toLowerCase() == "approved") {
+        return true;
+      }
+
+      return false;
+    }
+
+    return false;
+  }
+
+  bool getIsCancelled(
+      int appointmentStatus, List<Map<String, dynamic>> statuses) {
+    var x = selectedAppointmentStatusEnum(appointmentStatus, statuses);
+    if (x.isNotEmpty) {
+      if (x["name"].toLowerCase() == "cancelled") {
         return true;
       }
 
@@ -58,6 +72,8 @@ class _AppointmentListState extends State<AppointmentList> {
           return AppointmentListItem(
             appointmentId: appointment.id,
             isApproved: getIsApproved(
+                appointment.appointmentStatus, appointmentStatuses),
+            isCancelled: getIsCancelled(
                 appointment.appointmentStatus, appointmentStatuses),
             startTime:
                 CustomDateFormatter.getFormattedTime(appointment.startTime),

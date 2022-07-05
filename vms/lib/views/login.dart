@@ -3,12 +3,14 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
+import 'package:vms/custom_widgets/custom_alert_dialog_box.dart';
 import 'package:vms/custom_widgets/custom_error_label.dart';
 import 'package:vms/custom_widgets/custom_input_label.dart';
 import 'package:vms/custom_widgets/custom_single_line_button.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/user.dart';
 import 'package:vms/notifiers/login_logout_notifier.dart';
+import 'package:vms/notifiers/user_notifier.dart';
 import 'package:vms/services/login_service.dart';
 import 'package:vms/views/home.dart';
 import 'package:vms/partials/login/login_logo_section.dart';
@@ -53,7 +55,7 @@ class _LoginState extends State<Login> {
             appBar: AppBar(
               actions: null,
               automaticallyImplyLeading: false,
-              backgroundColor: Palette.CUSTOM_WHITE,
+              backgroundColor: Colors.white.withOpacity(0.1),
               elevation: 0,
             ),
             body: SingleChildScrollView(
@@ -224,8 +226,23 @@ class _LoginState extends State<Login> {
                                   var loginId = usernameController.text +
                                       passwordController.text;
                                   service.login(loginId).then((value) {
+                                    if (value.serverError == true) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return CustomAlertDialogBox(
+                                              textTitle: "Error",
+                                              textContent:
+                                                  "${value.errorMessage}. Please try again later!",
+                                              color: Colors.red,
+                                              redirectLocation: '/login',
+                                            );
+                                          });
+                                      return;
+                                    }
                                     if (value.data != null) {
                                       var newUser = value.data ?? null;
+
                                       context
                                           .read<LoginLogoutNotifier>()
                                           .logUserIn(newUser!)
@@ -234,14 +251,33 @@ class _LoginState extends State<Login> {
                                           print(context
                                               .read<LoginLogoutNotifier>()
                                               .isLoggedIn);
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) => Home()),
-                                          );
+                                          context
+                                              .read<UserNotifier>()
+                                              .getAndSetUserRoles()
+                                              .then((value) {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) => Home()),
+                                            );
+                                          });
                                         },
                                       );
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomAlertDialogBox(
+                                                color: Colors.red,
+                                                textTitle: "Error",
+                                                redirectLocation: '/login',
+                                                textContent:
+                                                    "${value.errorMessage}. Please check your login details");
+                                          });
                                     }
-                                    print("value: " + value.data.toString());
+                                    print(
+                                        "value.data: " + value.data.toString());
+                                    print("value.error: " +
+                                        value.error.toString());
                                     setState(() {
                                       isLoading = false;
                                     });

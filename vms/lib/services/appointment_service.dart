@@ -16,18 +16,18 @@ class AppointmentService {
 
   Future<APIResponse<List<Appointment>>> getAppointments() {
     return http.get(Uri.parse("$url/appointments")).then((data) {
-      print("getting here ooooo");
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         //convert into list of appointments
         final List<Appointment> appointments = [];
         for (var item in jsonData) {
-          print("item is : ${item}");
+          
           var appointment = Appointment(
             id: item["id"],
             host: Host.fromMap(item["host"]),
             groupHead: GroupHead.fromMap(item["groupHead"]),
             purposeOfReschedule: item["purposeOfReschedule"],
+            purposeOfCancel: item["purposeOfCancel"],
             guests: Visitor.convertVisitorMapsToVisitorObjects(item["guests"]),
             appointmentType: item["appointmentType"],
             appointmentStatus: item["appointmentStatus"],
@@ -42,7 +42,7 @@ class AppointmentService {
           );
           appointments.add(appointment);
         }
-        print("data here => ${appointments.toString()}");
+       
         return APIResponse<List<Appointment>>(data: appointments);
       }
       return APIResponse<List<Appointment>>(
@@ -65,6 +65,7 @@ class AppointmentService {
               Visitor.convertVisitorMapsToVisitorObjects(jsonData["guests"]),
           groupHead: GroupHead.fromMap(jsonData["groupHead"]),
           purposeOfReschedule: jsonData["purposeOfReschedule"],
+          purposeOfCancel: jsonData["purposeOfCancel"],
           appointmentType: jsonData["appointmentType"],
           appointmentStatus: jsonData["appointmentStatus"],
           visitType: jsonData["visitType"],
@@ -77,7 +78,7 @@ class AppointmentService {
           host: Host.fromMap(jsonData["host"]),
           appointmentDate: DateTime.parse(jsonData["appointmentDate"]),
         );
-        print("single data here => ${appointment.toString()}");
+        
         return APIResponse<Appointment>(data: appointment);
       }
       return APIResponse<Appointment>(
@@ -97,7 +98,7 @@ class AppointmentService {
                 toEncodable: appointment.myEncode))
         .then((data) {
       if (data.statusCode == 201) {
-        print(data.toString());
+        
 
         return APIResponse<Appointment>(data: appointment, error: null);
       }
@@ -117,17 +118,15 @@ class AppointmentService {
             body: json.encode(appointment.toJson(),
                 toEncodable: appointment.myEncode))
         .then((data) {
-      print("data status code" + data.statusCode.toString());
       if (data.statusCode == 200) {
-        print(data.toString());
         final jsonData = json.decode(data.body);
-        print("update json data" + jsonData.toString());
         var appointment = Appointment(
           id: jsonData["id"],
           guests:
               Visitor.convertVisitorMapsToVisitorObjects(jsonData["guests"]),
           groupHead: GroupHead.fromMap(jsonData["groupHead"]),
           purposeOfReschedule: jsonData["purposeOfReschedule"],
+          purposeOfCancel: jsonData["purposeOfCancel"],
           appointmentType: jsonData["appointmentType"],
           appointmentStatus: jsonData["appointmentStatus"],
           visitType: jsonData["visitType"],

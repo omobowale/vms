@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vms/partials/common/top.dart';
+import 'package:vms/partials/common/top_centered.dart';
 
 class PageTitle extends StatelessWidget {
   const PageTitle({Key? key}) : super(key: key);
@@ -7,10 +8,8 @@ class PageTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TopSection(
-        leftText: "Appointment Requests",
-        showButton: false,
-        rightText: "",
+      child: TopSectionCentered(
+        text: "Appointment Requests",
       ),
     );
   }

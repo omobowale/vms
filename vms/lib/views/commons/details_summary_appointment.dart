@@ -9,6 +9,7 @@ import 'package:vms/helperfunctions/appointmentStatusExtractor.dart';
 import 'package:vms/helperfunctions/custom_date_formatter.dart';
 import 'package:vms/helperfunctions/enumerationExtraction.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/login_logout_notifier.dart';
 import 'package:vms/partials/common/summary_footer_timestamp.dart';
 
 class DetailsSummaryAppointment extends StatefulWidget {
@@ -45,22 +46,14 @@ class _DetailsSummaryAppointmentState extends State<DetailsSummaryAppointment> {
   late String endTime;
   late AppointmentNotifier _appointmentNotifier;
   bool isApproved = false;
-  bool isLoading = false;
 
   List<Map<String, dynamic>> appointmentStatuses = [];
 
   @override
   void initState() {
-    setState(() {
-      isLoading = true;
-    });
-    getAndSetEnumeration("appointmentStatusEnum").then((value) {
-      setState(() {
-        appointmentStatuses = value;
-        isLoading = false;
-      });
-    });
-    // TODO: implement initState
+    appointmentStatuses = getAndSetEnumeration(
+        context.read<LoginLogoutNotifier>().allEnums, "appointmentStatusEnum");
+
     _appointmentNotifier =
         Provider.of<AppointmentNotifier>(context, listen: false);
     visitType =
@@ -112,22 +105,19 @@ class _DetailsSummaryAppointmentState extends State<DetailsSummaryAppointment> {
               SizedBox(
                 width: 5,
               ),
-              isLoading
-                  ? Container()
-                  : CustomTextWithBackground(
-                      text: selectedAppointmentStatusEnum(
-                              appointmentStatus, appointmentStatuses)["name"]
-                          .toUpperCase(),
-                      textColor: Palette.CUSTOM_WHITE,
-                      backgroundColor: selectedAppointmentStatusEnum(
-                                      appointmentStatus,
-                                      appointmentStatuses)["name"]
-                                  .toLowerCase() ==
-                              "approved"
-                          ? Palette.FBN_GREEN
-                          : Palette.FBN_ORANGE,
-                      fn: () {},
-                    ),
+              CustomTextWithBackground(
+                text: selectedAppointmentStatusEnum(
+                        appointmentStatus, appointmentStatuses)["name"]
+                    .toUpperCase(),
+                textColor: Palette.CUSTOM_WHITE,
+                backgroundColor: selectedAppointmentStatusEnum(
+                                appointmentStatus, appointmentStatuses)["name"]
+                            .toLowerCase() ==
+                        "approved"
+                    ? Palette.FBN_GREEN
+                    : Palette.FBN_ORANGE,
+                fn: () {},
+              ),
             ],
           ),
         ),

@@ -135,6 +135,7 @@ class AppointmentNotifier with ChangeNotifier {
             staffId: "",
           ),
           purposeOfReschedule: "",
+          purposeOfCancel: "",
         ),
       );
       setIsCreating = true;
@@ -315,6 +316,12 @@ class AppointmentNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  void addPurposeOfCancel(String purposeOfCancel) {
+    _appointmentsList[_appointmentsList.length - 1].purposeOfCancel =
+        purposeOfCancel;
+    notifyListeners();
+  }
+
   void showAppointment(Appointment appointment) {
     var app = "";
     app += "appointment id: " + appointment.id.toString() + "\n";
@@ -326,6 +333,10 @@ class AppointmentNotifier with ChangeNotifier {
     app += "start time: " + appointment.startTime.toString() + "\n";
     app += "visitType: " + appointment.visitType.toString() + "\n";
     app += "appointment type: " + appointment.appointmentType.toString() + "\n";
+    app += "reschedule reason: " +
+        appointment.purposeOfReschedule.toString() +
+        "\n";
+    app += "cancel reason: " + appointment.purposeOfCancel.toString() + "\n";
     app += "location" + appointment.location.toString() + "\n";
     app += "floor" + appointment.floorNumber.toString() + "\n";
     app += "guests" + appointment.guests.toString() + "\n";
@@ -563,6 +574,23 @@ class AppointmentNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  void isPurposeOfCancelValid(
+      String purposeOfCancel, Map<String, String> errorsType) {
+    if (purposeOfCancel == null || purposeOfCancel == "") {
+      visitorInformationErrors.putIfAbsent(
+          "purposeOfCancel", () => "Please select a purpose of cancel");
+    } else {
+      visitorInformationErrors.remove("purposeOfCancel");
+    }
+  }
+
+  void isCancelValid() {
+    var currentAppointment = _appointmentsList[_appointmentsList.length - 1];
+    isPurposeOfCancelValid(
+        currentAppointment.purposeOfCancel ?? "", newAppointmentErrors);
+    notifyListeners();
+  }
+
   void isRescheduleValid() {
     var currentAppointment = _appointmentsList[_appointmentsList.length - 1];
     isAppointmentDateValid(currentAppointment.appointmentDate);
@@ -584,10 +612,10 @@ class AppointmentNotifier with ChangeNotifier {
     }
   }
 
-  static Future<bool> belongsToGH(String id) {
-    UserNotifier _userNotifier = UserNotifier();
-    return _userNotifier.getGHId().then((value) => id == value);
-  }
+  // static Future<bool> belongsToGH(String id) {
+  //   UserNotifier _userNotifier = UserNotifier();
+  //   return _userNotifier.getGHId().then((value) => id == value);
+  // }
 
   static int getAppointmentStatusFromName(
       String name, List<Map<String, dynamic>> statuses) {

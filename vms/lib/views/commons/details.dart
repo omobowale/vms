@@ -10,15 +10,14 @@ import 'package:vms/helperfunctions/enumerationExtraction.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/appointment.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/login_logout_notifier.dart';
 import 'package:vms/notifiers/user_notifier.dart';
 import 'package:vms/partials/common/bottom_fixed_section_small.dart';
-import 'package:vms/partials/common/confirmation_modal.dart';
 import 'package:vms/partials/common/top_swap.dart';
 import 'package:vms/services/appointment_service.dart';
 import 'package:vms/views/commons/details_summary_appointment.dart';
 import 'package:vms/views/commons/details_summary_guests.dart';
 import 'package:vms/views/commons/details_summary_location.dart';
-import 'package:vms/views/maker/reschedule_appointment.dart';
 
 class Details extends StatefulWidget {
   final String id;
@@ -43,6 +42,7 @@ class _DetailsState extends State<Details> {
   UserNotifier _userNotifier = UserNotifier();
   List<Map<String, dynamic>> appointmentStatuses = [];
   late AppointmentNotifier _appointmentNotifier;
+  late LoginLogoutNotifier _loginLogoutNotifier;
   @override
   void initState() {
     // TODO: implement initState
@@ -51,16 +51,15 @@ class _DetailsState extends State<Details> {
     _appointmentNotifier =
         Provider.of<AppointmentNotifier>(context, listen: false);
 
+    _loginLogoutNotifier =
+        Provider.of<LoginLogoutNotifier>(context, listen: false);
+
     setState(() {
       isLoading = true;
       isApprovalLoading = true;
     });
 
-    _userNotifier.isGH().then((value) {
-      setState(() {
-        isGH = value;
-      });
-    });
+    isGH = _userNotifier.isGH();
 
     service.getAppointment(widget.id).then((data) {
       appointment = data;
@@ -70,12 +69,8 @@ class _DetailsState extends State<Details> {
       });
     });
 
-    getAndSetEnumeration("appointmentStatusEnum").then((value) {
-      setState(() {
-        appointmentStatuses = value;
-        isApprovalLoading = false;
-      });
-    });
+    appointmentStatuses = getAndSetEnumeration(
+        _loginLogoutNotifier.allEnums, "appointmentStatusEnum");
   }
 
   @override
@@ -191,33 +186,8 @@ class _DetailsState extends State<Details> {
                                 backgroundColor: Color(0xffF7F2F3),
                                 textColor: Color(0xffED682F),
                                 fn: () {
-                                  showModalBottomSheet<void>(
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return ConfirmationModal(
-                                            confirmationTextTitle:
-                                                "Are you sure?",
-                                            confirmationTextDescription:
-                                                "This will delete the appointment",
-                                            acceptFunction: () {
-                                              var appointment = context
-                                                  .read<AppointmentNotifier>()
-                                                  .appointments[0];
-                                              modifyAppointment(
-                                                CANCEL,
-                                                appointment,
-                                                context,
-                                                service,
-                                                setState,
-                                                updateLoading,
-                                                '/view',
-                                              );
-                                            },
-                                            declineFunction: () {
-                                              Navigator.pop(context);
-                                            });
-                                      });
+                                  Navigator.pushNamed(
+                                      context, '/cancel_appointment');
                                 },
                               ),
                             ),
@@ -230,9 +200,6 @@ class _DetailsState extends State<Details> {
                                 fn: () {
                                   Navigator.pushNamed(
                                       context, '/reschedule_appointment');
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          RescheduleAppointment()));
                                 },
                               ),
                             ),

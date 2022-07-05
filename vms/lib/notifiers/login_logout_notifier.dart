@@ -3,11 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vms/data/assets.dart';
+import 'package:vms/helperfunctions/enumerationExtraction.dart';
 import 'package:vms/models/asset.dart';
+import 'package:vms/models/group_head.dart';
 import 'package:vms/models/user.dart';
+import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/user_notifier.dart';
 
 class LoginLogoutNotifier with ChangeNotifier {
   bool _isLoggedIn = false;
+  GroupHead gh = GroupHead(id: "", staffId: "", fullName: "", email: "");
+  Map<String, dynamic> _allenums = {};
+
+  void set setGH(GroupHead gh) {}
 
   void setIsLoggedIn(bool b) {
     _isLoggedIn = b;
@@ -16,7 +24,24 @@ class LoginLogoutNotifier with ChangeNotifier {
 
   bool get isLoggedIn => _isLoggedIn;
 
+  Map<String, dynamic> get allEnums => {..._allenums};
+
+  void set setAllEnums(Map<String, dynamic> allE) {
+    _allenums = allE;
+    notifyListeners();
+  }
+
+  Future<void> prepareAllConstants() async {
+    getAndSetAllEnumerations().then((response) {
+      setAllEnums = response;
+    });
+  }
+
   Future<void> logUserIn(User user) async {
+    //set necessary variables from server
+    //set enumeration
+    prepareAllConstants();
+
     if (user != null) {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String userString = jsonEncode(user.toJson());
@@ -29,10 +54,16 @@ class LoginLogoutNotifier with ChangeNotifier {
   }
 
   Future<void> logUserOut() async {
+    AppointmentNotifier appointmentNotifier = AppointmentNotifier();
     SharedPreferences pref = await SharedPreferences.getInstance();
 
     pref.setString('userData', '');
 
+    //set editing and creating to false
+    appointmentNotifier.setIsCreating = false;
+    appointmentNotifier.setIsEditing = false;
+
+    //others
     setIsLoggedIn(false);
 
     notifyListeners();

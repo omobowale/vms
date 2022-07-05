@@ -11,11 +11,27 @@ final DENY = 2;
 final CANCEL = 3;
 final RESCHEDULE = 4;
 
+List<dynamic> extractReasons(List<Map<String, dynamic>>? cancelPurposes) {
+  if (cancelPurposes != null) {
+    List<dynamic> reasons = cancelPurposes
+        .map(
+          (e) => e["name"],
+        )
+        .toList();
+    return reasons;
+  }
+
+  return [];
+}
+
 bool canModify(Appointment appointment) {
   print("End time : ${appointment.endTime}");
   print("Time now : ${DateTime.now()}");
   DateTime endTime = appointment.endTime;
-  return endTime.isAfter(DateTime.now());
+  print("appointment status: ${appointment.appointmentStatus}");
+  return endTime.isAfter(DateTime.now()) &&
+      (appointment.appointmentStatus != CANCEL &&
+          appointment.appointmentStatus != DENY);
 }
 
 modifyAppointment(
@@ -57,8 +73,7 @@ modifyAppointment(
         text = "Appointment has been $modifyText";
       } else {
         title = "Error";
-        text =
-            "Appointment could not be $modifyText. Please try again later";
+        text = "Appointment could not be $modifyText. Please try again later";
       }
       showDialog<String>(
         barrierDismissible: false,

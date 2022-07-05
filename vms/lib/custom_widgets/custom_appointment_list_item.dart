@@ -11,6 +11,7 @@ class AppointmentListItem extends StatefulWidget {
   final String visitorName;
   final bool isGroupVisit;
   final bool isApproved;
+  final bool isCancelled;
 
   const AppointmentListItem({
     Key? key,
@@ -21,6 +22,7 @@ class AppointmentListItem extends StatefulWidget {
     required this.visitorName,
     required this.isGroupVisit,
     required this.isApproved,
+    required this.isCancelled,
   }) : super(key: key);
 
   @override
@@ -107,7 +109,12 @@ class _AppointmentListItemState extends State<AppointmentListItem> {
                     Icons.approval_sharp,
                     color: Palette.FBN_GREEN,
                   )
-                : Container(),
+                : widget.isCancelled
+                    ? Icon(
+                        Icons.block,
+                        color: Colors.red,
+                      )
+                    : Container(),
           ],
         ),
       ),

@@ -4,20 +4,23 @@ import 'package:provider/provider.dart';
 import 'package:vms/helperfunctions/modify_appointment.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/partials/common/bottom_fixed_section.dart';
+import 'package:vms/partials/common/confirmation_modal.dart';
 import 'package:vms/partials/common/top_swap.dart';
 import 'package:vms/partials/new_appointment/date_time.dart';
+import 'package:vms/partials/new_appointment/purpose_of_cancel.dart';
 import 'package:vms/partials/new_appointment/purpose_of_reschedule.dart';
 import 'package:vms/services/appointment_service.dart';
+import 'package:vms/views/commons/details.dart';
 import 'package:vms/views/view.dart';
 
-class RescheduleAppointment extends StatefulWidget {
-  const RescheduleAppointment({Key? key}) : super(key: key);
+class CancelAppointment extends StatefulWidget {
+  const CancelAppointment({Key? key}) : super(key: key);
 
   @override
-  State<RescheduleAppointment> createState() => _RescheduleAppointmentState();
+  State<CancelAppointment> createState() => _CancelAppointmentState();
 }
 
-class _RescheduleAppointmentState extends State<RescheduleAppointment> {
+class _CancelAppointmentState extends State<CancelAppointment> {
   AppointmentService get service => GetIt.I<AppointmentService>();
   bool updateLoading = false;
   @override
@@ -35,17 +38,15 @@ class _RescheduleAppointmentState extends State<RescheduleAppointment> {
               children: [
                 TopSwapSection(
                   leftText: "Cancel",
-                  rightText: "Reschedule Appointment",
+                  rightText: "Cancel Appointment",
                   fnOne: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
-                  child: ReschedulePurpose(),
+                  child: CancelPurpose(),
                 ),
-                Divider(),
-                DateTimeSection(),
                 Divider(),
               ],
             ),
@@ -56,7 +57,7 @@ class _RescheduleAppointmentState extends State<RescheduleAppointment> {
                 Navigator.of(context).pop();
               },
               fnTwo: () {
-                context.read<AppointmentNotifier>().isRescheduleValid();
+                context.read<AppointmentNotifier>().isCancelValid();
                 if (context
                     .read<AppointmentNotifier>()
                     .allNewAppointmentErrors
@@ -66,14 +67,10 @@ class _RescheduleAppointmentState extends State<RescheduleAppointment> {
                   });
                   var appointment =
                       context.read<AppointmentNotifier>().appointments[0];
-                  appointment.appointmentStatus = RESCHEDULE;
-                  print("Appointment before rescheduling: ");
-                  context
-                      .read<AppointmentNotifier>()
-                      .showAppointment(appointment);
+                  appointment.appointmentStatus = CANCEL;
 
-                  modifyAppointment(RESCHEDULE, appointment, context, service,
-                      setState, updateLoading, "/appointment_updated");
+                  // modifyAppointment(CANCEL, appointment, context, service,
+                  //     setState, updateLoading, "/appointment_updated");
                 } else {
                   print("There is an error");
                 }

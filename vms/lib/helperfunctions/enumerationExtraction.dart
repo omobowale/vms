@@ -13,12 +13,18 @@ List<Map<String, dynamic>> extractFromEnumeration(
   return enumList;
 }
 
-Future<List<Map<String, dynamic>>> getAndSetEnumeration(String enumType) {
-  return service.getEnumerations().then((response) {
-    var x = response.data![0].enums[enumType];
+List<Map<String, dynamic>> getAndSetEnumeration(Map<String, dynamic> enums, String enumType) {
+  
+    var x = enums[enumType];
 
     var typeList = extractFromEnumeration(x);
 
     return typeList;
+  
+}
+
+Future<Map<String, dynamic>> getAndSetAllEnumerations() {
+  return service.getEnumerations().then((response) {
+    return response.data![0].enums;
   });
 }

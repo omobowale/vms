@@ -10,14 +10,14 @@ import 'package:vms/helperfunctions/modify_appointment.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/notifiers/login_logout_notifier.dart';
 
-class ReschedulePurpose extends StatefulWidget {
-  const ReschedulePurpose({Key? key}) : super(key: key);
+class CancelPurpose extends StatefulWidget {
+  const CancelPurpose({Key? key}) : super(key: key);
 
   @override
-  State<ReschedulePurpose> createState() => _ReschedulePurposeState();
+  State<CancelPurpose> createState() => _CancelPurposeState();
 }
 
-class _ReschedulePurposeState extends State<ReschedulePurpose> {
+class _CancelPurposeState extends State<CancelPurpose> {
   late List<Map<String, dynamic>> list;
   bool othersInputVisible = false;
 
@@ -38,8 +38,9 @@ class _ReschedulePurposeState extends State<ReschedulePurpose> {
       child: Column(
         children: [
           CustomErrorLabel(
-              errorText: _appointmentNotifier
-                  .allNewAppointmentErrors["purposeOfReschedule"]),
+            errorText:
+                _appointmentNotifier.allNewAppointmentErrors["purposeOfCancel"],
+          ),
           CustomDropDown(
             onTap: (value) {
               if (value.toString().toLowerCase() == "others") {
@@ -49,7 +50,7 @@ class _ReschedulePurposeState extends State<ReschedulePurpose> {
                 });
                 print("others selected");
               } else {
-                _appointmentNotifier.removeError("purposeOfReschedule");
+                _appointmentNotifier.removeError("purposeOfCancel");
                 _appointmentNotifier.addPurposeOfCancel(value);
                 setState(() {
                   othersInputVisible = false;

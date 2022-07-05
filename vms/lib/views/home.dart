@@ -20,15 +20,15 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    UserNotifier userNotifier = UserNotifier();
-    userNotifier
-        .isGH()
-        .then((value) => print("user is GH: " + value.toString()));
+    // UserNotifier userNotifier = UserNotifier();
+    // userNotifier.isGH();
   }
 
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = context.read<LoginLogoutNotifier>().isLoggedIn;
+    print("all enums home: " +
+        context.read<LoginLogoutNotifier>().allEnums.toString());
     return Scaffold(
       body: isLoggedIn
           ? Container(

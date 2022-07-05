@@ -9,6 +9,7 @@ import 'package:vms/custom_widgets/custom_floating_action_button.dart';
 import 'package:vms/custom_widgets/custom_no_appointment.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/appointment.dart';
+import 'package:vms/models/user.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
 import 'package:vms/notifiers/login_logout_notifier.dart';
 import 'package:vms/notifiers/user_notifier.dart';
@@ -35,16 +36,18 @@ class _ViewState extends State<View> {
   List<Appointment> appointmentListData = [];
   List<DateTime> markedDates = [];
 
-  UserNotifier userNotifier = UserNotifier();
-
   @override
   void initState() {
+    UserNotifier _userNotifier =
+        Provider.of<UserNotifier>(context, listen: false);
+
     _appointmentList =
         new APIResponse<List<Appointment>>(data: [], error: false);
 
     _fetchAppointmentForDay();
     // TODO: implement initState
     super.initState();
+    isGH = _userNotifier.userIsGH;
   }
 
   onSelect(data) {
@@ -59,18 +62,13 @@ class _ViewState extends State<View> {
 
   _fetchAppointmentForDay() async {
     _fetchAppointmentsAndUserRole().then((_) {
-      userNotifier.isGH().then((value) {
-        print("user is GH: " + value.toString());
-
-        setState(() {
-          isLoading = false;
-          isGH = value;
-          appointmentListData = AppointmentNotifier.fetchAppointmentForDay(
-              _appointmentList.data ?? [], selectedDate);
-          markedDates =
-              AppointmentNotifier.getMarkedDates(_appointmentList.data ?? []);
-        });
+      setState(() {
+        isLoading = false;
       });
+      appointmentListData = AppointmentNotifier.fetchAppointmentForDay(
+          _appointmentList.data ?? [], selectedDate);
+      markedDates =
+          AppointmentNotifier.getMarkedDates(_appointmentList.data ?? []);
     });
   }
 
@@ -85,49 +83,54 @@ class _ViewState extends State<View> {
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = context.read<LoginLogoutNotifier>().isLoggedIn;
-    return !isLoading
-        ? Scaffold(
-            body: ListView(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    print("is logged in ${isLoggedIn}");
+    return isLoggedIn
+        ? !isLoading
+            ? Scaffold(
+                body: ListView(
                   children: [
-                    CustomCalendarStrip(
-                      onSelect: onSelect,
-                      selectedDate: selectedDate,
-                      markedDates: markedDates,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-                      child: appointmentListData.length > 0
-                          ? Column(
-                              children: [
-                                AppointmentDayDate(selectedDate: selectedDate),
-                                AppointmentList(
-                                    appointmentList: appointmentListData),
-                              ],
-                            )
-                          : NoAppointment(
-                              selectedDate: selectedDate,
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomCalendarStrip(
+                          onSelect: onSelect,
+                          selectedDate: selectedDate,
+                          markedDates: markedDates,
+                        ),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                          child: appointmentListData.length > 0
+                              ? Column(
+                                  children: [
+                                    AppointmentDayDate(
+                                        selectedDate: selectedDate),
+                                    AppointmentList(
+                                        appointmentList: appointmentListData),
+                                  ],
+                                )
+                              : NoAppointment(
+                                  selectedDate: selectedDate,
+                                ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-            bottomNavigationBar: CustomBottomNavigationBar(
-              isGH: isGH,
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.endDocked,
-            floatingActionButton: CustomFloatingActionButton(),
-          )
-        : Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Palette.FBN_BLUE,
-              ),
-            ),
-          );
+                bottomNavigationBar: CustomBottomNavigationBar(
+                  isGH: isGH,
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endDocked,
+                floatingActionButton: CustomFloatingActionButton(),
+              )
+            : Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(
+                    color: Palette.FBN_BLUE,
+                  ),
+                ),
+              )
+        : Login();
   }
 }

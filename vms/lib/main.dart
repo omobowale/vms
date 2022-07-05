@@ -26,6 +26,7 @@ import 'package:vms/views/login.dart';
 import 'package:vms/views/maker/appointment_creation_success.dart';
 import 'package:vms/views/maker/appointment_location.dart';
 import 'package:vms/views/maker/appointment_updated_success.dart';
+import 'package:vms/views/maker/cancel_appointment.dart';
 import 'package:vms/views/maker/new_appointment.dart';
 import 'package:vms/views/maker/reschedule_appointment.dart';
 import 'package:vms/views/maker/summary.dart';
@@ -144,6 +145,7 @@ class MyApp extends StatelessWidget {
         '/reschedule_appointment': (context) => RescheduleAppointment(),
         '/summary': (context) => Summary(),
         '/reschedule_appointment': (context) => RescheduleAppointment(),
+        '/cancel_appointment': (context) => CancelAppointment(),
         '/appointment_requests': (context) => AppointmentRequests(),
         '/appointment_location': (context) => AppointmentLocation(),
         '/appointment_created': (context) => AppointmentCreationSuccess(),

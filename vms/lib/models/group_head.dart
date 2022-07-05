@@ -13,6 +13,10 @@ class GroupHead with ChangeNotifier {
     required this.email,
   });
 
+  factory GroupHead.emptyOne() {
+    return GroupHead(id: "", staffId: "", fullName: "", email: "");
+  }
+
   @override
   String toString() {
     return "[full name: $fullName, id: $id,  email: $email]";

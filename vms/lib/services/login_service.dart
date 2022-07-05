@@ -27,14 +27,14 @@ class LoginService {
           username: jsonData["username"],
         );
 
-        return APIResponse<User>(data: user);
+        return APIResponse<User>(data: user, error: false);
       }
       return APIResponse<User>(
-          error: true, errorMessage: "Error fetching user");
+          serverError: true, errorMessage: "No user found");
     }).catchError((error) {
       print("error here: " + error.toString());
       return APIResponse<Appointment>(
-          error: true, errorMessage: "Error fetching user");
+          serverError: true, errorMessage: "Error fetching user");
     });
   }
 }

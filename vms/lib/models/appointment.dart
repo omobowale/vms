@@ -19,6 +19,7 @@ class Appointment {
   List<dynamic> rooms;
   GroupHead groupHead;
   String? purposeOfReschedule;
+  String? purposeOfCancel;
 
   Appointment(
       {required this.id,
@@ -35,6 +36,7 @@ class Appointment {
       required this.meetingRoom,
       required this.rooms,
       required this.location,
+      this.purposeOfCancel,
       this.purposeOfReschedule});
 
   void set setStartTime(DateTime time) {
@@ -69,7 +71,9 @@ class Appointment {
       "guests": guests,
       "roomNumbers": rooms,
       "location": location,
-      "groupHead": groupHead
+      "groupHead": groupHead,
+      "purposeOfCancel": purposeOfCancel,
+      "purposeOfReschedule": purposeOfReschedule,
     };
   }
 
