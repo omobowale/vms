@@ -123,7 +123,7 @@ class AppointmentNotifier with ChangeNotifier {
           appointmentType: "",
           appointmentStatus: 0, //appointmentStatuses[0]["value"],
           appointmentDate: DateTime.now(),
-          floorNumber: floors[0],
+          floorNumber: "",
           guests: [newVisitor],
           rooms: [],
           meetingRoom: "",

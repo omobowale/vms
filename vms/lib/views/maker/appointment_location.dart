@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:vms/custom_classes/palette.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/location.dart';
+import 'package:vms/models/floor.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/locations_notifier.dart';
 import 'package:vms/partials/appointment_location/room.dart';
 import 'package:vms/services/location_service.dart';
 import 'package:vms/views/maker/visitor_information.dart';
@@ -24,23 +26,32 @@ class AppointmentLocation extends StatefulWidget {
 class _AppointmentLocationState extends State<AppointmentLocation> {
   LocationService get service => GetIt.I<LocationService>();
   late APIResponse<List<Location>> _locationsList;
-  late List<Floor> _floorsList;
-  List<Location> fallbackLocation = [
-    Location(floors: [], id: 1, name: "Others")
-  ];
+  LocationsNotifier locationsNotifier = LocationsNotifier();
+
+  List<Location> fallbackLocation = [];
   bool isLoading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    fallbackLocation.add(locationsNotifier.currentLocation);
+
+    locationsNotifier = Provider.of<LocationsNotifier>(context, listen: false);
+
     setState(() {
       isLoading = true;
     });
     service.getLocations().then((response) {
       _locationsList = response;
-      _floorsList = fetchFloorsFromLocation();
-      print("location list: ${_locationsList}");
+      if (_locationsList.data != null) {
+        locationsNotifier.setCurrentLocation = _locationsList.data![0];
+        locationsNotifier.setCurrentFloors = _locationsList.data![0].floors;
+      } else {
+        locationsNotifier.setCurrentFloors = fallbackLocation[0].floors;
+      }
+
       setState(() {
         isLoading = false;
       });
@@ -51,6 +62,7 @@ class _AppointmentLocationState extends State<AppointmentLocation> {
   Widget build(BuildContext context) {
     AppointmentNotifier _appointmentNotifier =
         Provider.of<AppointmentNotifier>(context);
+
     return isLoading
         ? Scaffold(
             body: Center(
@@ -68,10 +80,7 @@ class _AppointmentLocationState extends State<AppointmentLocation> {
                   labelText: "Location",
                   locationsList: _locationsList.data ?? fallbackLocation,
                 ),
-                Floor(
-                  labelText: "Floor",
-                ),
-                Divider(),
+                FloorSection(labelText: "Floor"),
                 Room(onComplete: (value) {
                   _appointmentNotifier.addMeetingRoom(value);
                 }),

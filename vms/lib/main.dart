@@ -9,6 +9,7 @@ import 'package:vms/notifiers/appointment_status_types_notifier.dart';
 import 'package:vms/notifiers/asset_present_bool_notifier.dart';
 import 'package:vms/notifiers/assets_notifier.dart';
 import 'package:vms/notifiers/group_heads_notifier.dart';
+import 'package:vms/notifiers/locations_notifier.dart';
 import 'package:vms/notifiers/login_logout_notifier.dart';
 import 'package:vms/notifiers/user_notifier.dart';
 import 'package:vms/notifiers/purpose_notifier.dart';
@@ -79,6 +80,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => UserNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LocationsNotifier(),
         ),
       ],
       child: MyApp(),

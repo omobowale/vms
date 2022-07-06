@@ -7,6 +7,7 @@ import 'package:vms/custom_widgets/custom_input_label.dart';
 import 'package:vms/models/api_response.dart';
 import 'package:vms/models/location.dart';
 import 'package:vms/notifiers/appointment_notifier.dart';
+import 'package:vms/notifiers/locations_notifier.dart';
 import 'package:vms/services/location_service.dart';
 
 class LocationSection extends StatefulWidget {
@@ -38,14 +39,27 @@ class _LocationSectionState extends State<LocationSection> {
     // });
   }
 
+  Location getLocationByName(String name, List<Location> locations) {
+    if (locations != null) {
+      try {
+        Location location = locations.firstWhere((e) => e.name == name);
+        return location;
+      } on StateError {
+        return locations[0];
+      }
+    }
+
+    return locations[0];
+  }
+
   List<dynamic> extractLocations(List<Location>? locations) {
     if (locations != null) {
-      List<dynamic> reasons = locations
+      List<dynamic> locationsNames = locations
           .map(
             (e) => e.name,
           )
           .toList();
-      return reasons;
+      return locationsNames;
     }
 
     return [];
@@ -53,8 +67,12 @@ class _LocationSectionState extends State<LocationSection> {
 
   @override
   Widget build(BuildContext context) {
-    var location = context.read<AppointmentNotifier>().appointments[0].location;
-    print("location: ${location}");
+    String location =
+        context.read<AppointmentNotifier>().appointments[0].location;
+    String locationText = location.isEmpty
+        ? context.read<LocationsNotifier>().currentLocation.name
+        : location;
+    print("location here: ${location}");
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 20,
@@ -69,9 +87,21 @@ class _LocationSectionState extends State<LocationSection> {
                 .allLocationErrors["location"],
           ),
           CustomDropDown(
-              text: location == "" ? widget.locationsList[0].name : location,
+              text: locationText,
               onTap: (value) {
+                var currentLocation =
+                    getLocationByName(value, widget.locationsList);
+
+                context.read<LocationsNotifier>().setCurrentLocation =
+                    currentLocation;
+                context.read<LocationsNotifier>().setCurrentFloors =
+                    currentLocation.floors;
+                print("current location: ${currentLocation}");
+
                 context.read<AppointmentNotifier>().addLocation(value);
+                context
+                    .read<AppointmentNotifier>()
+                    .addFloor(currentLocation.floors[0].name);
               },
               lists: extractLocations(widget.locationsList).toSet()),
         ],

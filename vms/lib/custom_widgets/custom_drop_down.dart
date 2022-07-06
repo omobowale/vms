@@ -29,11 +29,13 @@ class _CustomDropDownState extends State<CustomDropDown> {
     // TODO: implement initState
 
     super.initState();
-    selectedValue = widget.text;
   }
 
   @override
   Widget build(BuildContext context) {
+    selectedValue = widget.text;
+    print("text: ${selectedValue}");
+    print("list: ${widget.lists}");
     return DropdownButtonFormField(
       value: selectedValue,
       decoration: InputDecoration(
