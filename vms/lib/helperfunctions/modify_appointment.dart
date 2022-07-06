@@ -25,10 +25,9 @@ List<dynamic> extractReasons(List<Map<String, dynamic>>? cancelPurposes) {
 }
 
 bool canModify(Appointment appointment) {
-  print("End time : ${appointment.endTime}");
-  print("Time now : ${DateTime.now()}");
+  print("I got here");
   DateTime endTime = appointment.endTime;
-  print("appointment status: ${appointment.appointmentStatus}");
+
   return endTime.isAfter(DateTime.now()) &&
       (appointment.appointmentStatus != CANCEL &&
           appointment.appointmentStatus != DENY);

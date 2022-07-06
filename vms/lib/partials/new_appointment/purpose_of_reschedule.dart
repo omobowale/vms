@@ -18,45 +18,78 @@ class ReschedulePurpose extends StatefulWidget {
 }
 
 class _ReschedulePurposeState extends State<ReschedulePurpose> {
-  late List<Map<String, dynamic>> list;
+  late List<Map<String, dynamic>> list = [
+    {"0": "others"}
+  ];
   bool othersInputVisible = false;
 
   @override
   void initState() {
     // TODO: implement initState
-    list = getAndSetEnumeration(
+    var newlist = getAndSetEnumeration(
         context.read<LoginLogoutNotifier>().allEnums, "cancellationReasonEnum");
+    list = newlist.isEmpty ? list : newlist;
+
     super.initState();
+  }
+
+  bool isInList(List<dynamic> list, String purposeOfReschedule) {
+    try {
+      var x = list.firstWhere((element) => element == purposeOfReschedule);
+      if (x.isNotEmpty) {
+        return true;
+      }
+      return false;
+    } on StateError {
+      return false;
+    }
+  }
+
+  String setStateAndReturn(String x) {
+    setState(() {
+      othersInputVisible = true;
+    });
+    return x;
   }
 
   @override
   Widget build(BuildContext context) {
     AppointmentNotifier _appointmentNotifier =
         Provider.of<AppointmentNotifier>(context);
+    String purposeOfReschedule =
+        _appointmentNotifier.appointments[0].purposeOfReschedule ?? "";
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomErrorLabel(
-              errorText: _appointmentNotifier
-                  .allNewAppointmentErrors["purposeOfReschedule"]),
+            errorText: othersInputVisible
+                ? ""
+                : _appointmentNotifier
+                    .allNewAppointmentErrors["purposeOfReschedule"],
+          ),
           CustomDropDown(
             onTap: (value) {
               if (value.toString().toLowerCase() == "others") {
-                _appointmentNotifier.addPurposeOfCancel("");
+                _appointmentNotifier.addPurposeOfReschedule("");
                 setState(() {
                   othersInputVisible = true;
                 });
                 print("others selected");
               } else {
                 _appointmentNotifier.removeError("purposeOfReschedule");
-                _appointmentNotifier.addPurposeOfCancel(value);
+                _appointmentNotifier.addPurposeOfReschedule(value);
                 setState(() {
                   othersInputVisible = false;
                 });
               }
             },
-            text: list[0]["name"],
+            text: purposeOfReschedule == ""
+                ? list[0]["name"]
+                : isInList(extractReasons(list), purposeOfReschedule)
+                    ? purposeOfReschedule
+                    : setStateAndReturn(list[list.length - 1]["name"]),
             lists: extractReasons(list).toSet(),
           ),
           Visibility(
@@ -67,12 +100,21 @@ class _ReschedulePurposeState extends State<ReschedulePurpose> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomInputLabel(labelText: "Others? Please specify"),
+                  CustomErrorLabel(
+                    errorText: !othersInputVisible
+                        ? ""
+                        : _appointmentNotifier
+                            .allNewAppointmentErrors["purposeOfReschedule"],
+                  ),
                   CustomInputField(
                     bordered: false,
                     hintText: "Others",
-                    labelText: "",
+                    labelText: _appointmentNotifier
+                            .appointments[0].purposeOfReschedule ??
+                        "",
                     onComplete: (value) {
-                      _appointmentNotifier.addPurposeOfCancel(value);
+                      _appointmentNotifier.removeError("purposeOfReschedule");
+                      _appointmentNotifier.addPurposeOfReschedule(value);
                     },
                   ),
                 ],

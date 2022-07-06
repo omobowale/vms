@@ -62,68 +62,78 @@ class _SummaryState extends State<Summary> {
           Divider(),
           AddAnotherLink(),
           BottomFixedSection(
-              leftText: "Back",
-              rightText: "Submit",
-              fnOne: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => VisitorInformation()));
-              },
-              fnTwo: () {
-                showModalBottomSheet<void>(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ConfirmationModal(
-                        confirmationTextTitle: "Are you sure?",
-                        confirmationTextDescription:
-                            "You are about to submit this appointment, you will not be able to modify it again",
-                        acceptFunction: () async {
-                          print("yes");
-                          var newAppointment =
-                              _appointmentNotifier.appointments[0];
-                          var response =
-                              await service.createAppointment(newAppointment);
+            leftText: "Back",
+            rightText: "Submit",
+            fnOne: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => VisitorInformation()));
+            },
+            fnTwo: () {
+              showModalBottomSheet<void>(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (BuildContext context) {
+                  return ConfirmationModal(
+                    confirmationTextTitle: "Are you sure?",
+                    confirmationTextDescription:
+                        "You are about to submit this appointment, you will not be able to modify it again",
+                    acceptFunction: () async {
+                      print("yes");
+                      var newAppointment = _appointmentNotifier.appointments[0];
+                      var response =
+                          await service.createAppointment(newAppointment);
 
-                          Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      print("error" + response.error.toString());
+                      print("errorMessage" + response.errorMessage.toString());
 
-                          if (response.error != null ||
-                              response.errorMessage != null) {
-                            showDialog(
-                                context: context,
-                                builder: (ctx) {
-                                  return AlertDialog(
-                                    actions: [],
-                                    title: Text(
-                                      "Error",
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    content: response.error != null
-                                        ? Text(
+                      if (response.error == true ||
+                          response.errorMessage != "") {
+                        showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                title: Text(
+                                  "Error",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                content: response.error != null
+                                    ? Text(
+                                        "Could not create appointment. Please try again!",
+                                      )
+                                    : Text(
+                                        response.errorMessage ??
                                             "Could not create appointment. Please try again!",
-                                          )
-                                        : Text(
-                                            response.errorMessage ??
-                                                "Could not create appointment. Please try again!",
-                                          ),
-                                  );
-                                });
-                          } else {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AppointmentCreationSuccess()),
-                                (Route<dynamic> route) => false);
-                          }
-                          // }
-                        },
-                        declineFunction: () {
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    });
-              }),
+                                      ),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/view');
+                                    },
+                                    child: Text("Ok"),
+                                  ),
+                                ],
+                              );
+                            });
+                      } else {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AppointmentCreationSuccess()),
+                            (Route<dynamic> route) => false);
+                      }
+                      // }
+                    },
+                    declineFunction: () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ).then((value) => null);
+            },
+          ),
         ],
       ),
     );

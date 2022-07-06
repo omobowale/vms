@@ -85,8 +85,9 @@ class _DetailsState extends State<Details> {
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(
-              color: Palette.FBN_BLUE,
-            ))
+                color: Palette.FBN_BLUE,
+              ),
+            )
           : Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -187,7 +188,10 @@ class _DetailsState extends State<Details> {
                                 textColor: Color(0xffED682F),
                                 fn: () {
                                   Navigator.pushNamed(
-                                      context, '/cancel_appointment');
+                                          context, '/cancel_appointment')
+                                      .then((value) {
+                                    setState(() {});
+                                  });
                                 },
                               ),
                             ),
@@ -199,7 +203,10 @@ class _DetailsState extends State<Details> {
                                 textColor: Palette.FBN_BLUE,
                                 fn: () {
                                   Navigator.pushNamed(
-                                      context, '/reschedule_appointment');
+                                          context, '/reschedule_appointment')
+                                      .then((value) {
+                                    setState(() {});
+                                  });
                                 },
                               ),
                             ),

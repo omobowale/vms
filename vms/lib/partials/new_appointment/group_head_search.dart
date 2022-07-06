@@ -139,7 +139,7 @@ class GroupHeadSearch extends SearchDelegate<GroupHead> {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.leaderboard),
+          Icon(Icons.group_add_outlined),
           SizedBox(
             height: 30,
           ),
@@ -192,7 +192,7 @@ class GroupHeadSearch extends SearchDelegate<GroupHead> {
             query = suggestion.fullName;
             close(context, suggestion);
           },
-          leading: Icon(Icons.leaderboard),
+          leading: Icon(Icons.group_add_outlined),
           title: RichText(
             text: TextSpan(
               text: queryText,

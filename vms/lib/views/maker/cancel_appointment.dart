@@ -47,7 +47,6 @@ class _CancelAppointmentState extends State<CancelAppointment> {
                   margin: EdgeInsets.only(top: 20),
                   child: CancelPurpose(),
                 ),
-                Divider(),
               ],
             ),
             BottomFixedSection(
@@ -69,8 +68,8 @@ class _CancelAppointmentState extends State<CancelAppointment> {
                       context.read<AppointmentNotifier>().appointments[0];
                   appointment.appointmentStatus = CANCEL;
 
-                  // modifyAppointment(CANCEL, appointment, context, service,
-                  //     setState, updateLoading, "/appointment_updated");
+                  modifyAppointment(CANCEL, appointment, context, service,
+                      setState, updateLoading, "/appointment_updated");
                 } else {
                   print("There is an error");
                 }

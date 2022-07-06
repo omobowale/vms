@@ -127,7 +127,7 @@ class AppointmentNotifier with ChangeNotifier {
           guests: [newVisitor],
           rooms: [],
           meetingRoom: "",
-          location: locations[0],
+          location: "",
           groupHead: GroupHead(
             email: "",
             fullName: "",
@@ -577,10 +577,10 @@ class AppointmentNotifier with ChangeNotifier {
   void isPurposeOfCancelValid(
       String purposeOfCancel, Map<String, String> errorsType) {
     if (purposeOfCancel == null || purposeOfCancel == "") {
-      visitorInformationErrors.putIfAbsent(
-          "purposeOfCancel", () => "Please select a purpose of cancel");
+      errorsType.putIfAbsent(
+          "purposeOfCancel", () => "Please select/input a purpose of cancel");
     } else {
-      visitorInformationErrors.remove("purposeOfCancel");
+      errorsType.remove("purposeOfCancel");
     }
   }
 

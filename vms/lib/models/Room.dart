@@ -1,33 +1,27 @@
 class Room {
   String name;
-  String id;
-  final bool checked;
-  final bool isAvailable;
+  int id;
+  int floorId;
 
-  Room(
-      {required this.name,
-      required this.id,
-      required this.checked,
-      required this.isAvailable});
+  Room({
+    required this.name,
+    required this.id,
+    required this.floorId,
+  });
 
   @override
   String toString() {
     // TODO: implement toString
-    return "[name: ${this.name}, id: ${this.id}, checked: ${this.checked}, available: ${this.isAvailable}]";
+    return "[name: ${this.name}, id: ${this.id}, floorId: ${this.floorId}]";
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "name": name,
-      "id": id,
-      "checked": checked,
-      "isAvailable": isAvailable
-    };
+    return {"name": name, "id": id, "floorId": floorId};
   }
 
   factory Room.fromMap(Map<String, dynamic> room) {
     return new Room(
-        checked: true, id: room["id"], isAvailable: true, name: room["name"]);
+        id: room["id"], floorId: room["floorId"], name: room["name"]);
   }
 
   static List<Room> convertRoomMapsToRoomObjects(List<dynamic> rooms) {

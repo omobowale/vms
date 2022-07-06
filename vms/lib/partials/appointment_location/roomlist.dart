@@ -37,7 +37,7 @@ class RoomsList extends StatelessWidget {
               children: _roomsNotifier.allrooms
                   .map(
                     (room) => CustomCheckBox(
-                      id: room.id,
+                      id: room.id.toString(),
                       isClicked: (id) {
                         _appointmentNotifier.addRoom(room);
                         context
@@ -46,8 +46,8 @@ class RoomsList extends StatelessWidget {
                       },
                       checkList: _appointmentNotifier.appointments[0].rooms,
                       labelText: room.name.toString(),
-                      checked: room.checked,
-                      isAvailable: room.isAvailable,
+                      checked: true,
+                      isAvailable: false,
                     ),
                   )
                   .toList(),

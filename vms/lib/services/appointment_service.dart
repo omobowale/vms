@@ -21,7 +21,6 @@ class AppointmentService {
         //convert into list of appointments
         final List<Appointment> appointments = [];
         for (var item in jsonData) {
-          
           var appointment = Appointment(
             id: item["id"],
             host: Host.fromMap(item["host"]),
@@ -42,7 +41,7 @@ class AppointmentService {
           );
           appointments.add(appointment);
         }
-       
+
         return APIResponse<List<Appointment>>(data: appointments);
       }
       return APIResponse<List<Appointment>>(
@@ -78,8 +77,8 @@ class AppointmentService {
           host: Host.fromMap(jsonData["host"]),
           appointmentDate: DateTime.parse(jsonData["appointmentDate"]),
         );
-        
-        return APIResponse<Appointment>(data: appointment);
+
+        return APIResponse<Appointment>(data: appointment, error: false);
       }
       return APIResponse<Appointment>(
           error: true, errorMessage: "Error fetching appointment");
@@ -98,15 +97,14 @@ class AppointmentService {
                 toEncodable: appointment.myEncode))
         .then((data) {
       if (data.statusCode == 201) {
-        
-
-        return APIResponse<Appointment>(data: appointment, error: null);
+        return APIResponse<Appointment>(
+            data: appointment, error: false, errorMessage: "");
       }
       return APIResponse<Appointment>(
-          error: true, errorMessage: "Error fetching appointment");
+          error: true, errorMessage: "Error fetching appointment", data: null);
     }).catchError((error) {
       return APIResponse<Appointment>(
-          error: true, errorMessage: "Error fetching appointment");
+          error: true, errorMessage: "Error fetching appointment", data: null);
     });
   }
 

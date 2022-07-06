@@ -18,6 +18,7 @@ import 'package:vms/services/appointment_service.dart';
 import 'package:vms/services/enum_service.dart';
 import 'package:vms/services/group_head_service.dart';
 import 'package:vms/services/host_name_service.dart';
+import 'package:vms/services/location_service.dart';
 import 'package:vms/services/login_service.dart';
 import 'package:vms/views/checker/appointment_requests.dart';
 import 'package:vms/views/commons/details.dart';
@@ -40,6 +41,7 @@ void setUpLocator() {
   GetIt.I.registerLazySingleton(() => EnumService());
   GetIt.I.registerLazySingleton(() => GroupHeadService());
   GetIt.I.registerLazySingleton(() => HostNameService());
+  GetIt.I.registerLazySingleton(() => LocationService());
 }
 
 void main() {

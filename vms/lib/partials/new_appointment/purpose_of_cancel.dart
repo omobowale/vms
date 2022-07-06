@@ -18,28 +18,56 @@ class CancelPurpose extends StatefulWidget {
 }
 
 class _CancelPurposeState extends State<CancelPurpose> {
-  late List<Map<String, dynamic>> list;
+  late List<Map<String, dynamic>> list = [
+    {"0": "others"}
+  ];
   bool othersInputVisible = false;
 
   @override
   void initState() {
     // TODO: implement initState
-    list = getAndSetEnumeration(
+    var newlist = getAndSetEnumeration(
         context.read<LoginLogoutNotifier>().allEnums, "cancellationReasonEnum");
+    list = newlist.isEmpty ? list : newlist;
+
     super.initState();
+  }
+
+  bool isInList(List<dynamic> list, String purposeOfCancel) {
+    try {
+      var x = list.firstWhere((element) => element == purposeOfCancel);
+      if (x.isNotEmpty) {
+        return true;
+      }
+      return false;
+    } on StateError {
+      return false;
+    }
+  }
+
+  String setStateAndReturn(String x) {
+    setState(() {
+      othersInputVisible = true;
+    });
+    return x;
   }
 
   @override
   Widget build(BuildContext context) {
     AppointmentNotifier _appointmentNotifier =
         Provider.of<AppointmentNotifier>(context);
+    String purposeOfCancel =
+        _appointmentNotifier.appointments[0].purposeOfCancel ?? "";
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomErrorLabel(
-            errorText:
-                _appointmentNotifier.allNewAppointmentErrors["purposeOfCancel"],
+            errorText: othersInputVisible
+                ? ""
+                : _appointmentNotifier
+                    .allNewAppointmentErrors["purposeOfCancel"],
           ),
           CustomDropDown(
             onTap: (value) {
@@ -48,7 +76,6 @@ class _CancelPurposeState extends State<CancelPurpose> {
                 setState(() {
                   othersInputVisible = true;
                 });
-                print("others selected");
               } else {
                 _appointmentNotifier.removeError("purposeOfCancel");
                 _appointmentNotifier.addPurposeOfCancel(value);
@@ -57,7 +84,11 @@ class _CancelPurposeState extends State<CancelPurpose> {
                 });
               }
             },
-            text: list[0]["name"],
+            text: purposeOfCancel == ""
+                ? list[0]["name"]
+                : isInList(extractReasons(list), purposeOfCancel)
+                    ? purposeOfCancel
+                    : setStateAndReturn(list[list.length - 1]["name"]),
             lists: extractReasons(list).toSet(),
           ),
           Visibility(
@@ -68,13 +99,23 @@ class _CancelPurposeState extends State<CancelPurpose> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomInputLabel(labelText: "Others? Please specify"),
+                  CustomErrorLabel(
+                    errorText: !othersInputVisible
+                        ? ""
+                        : _appointmentNotifier
+                            .allNewAppointmentErrors["purposeOfCancel"],
+                  ),
                   CustomInputField(
                     bordered: false,
                     hintText: "Others",
-                    labelText: "",
+                    labelText:
+                        _appointmentNotifier.appointments[0].purposeOfCancel ??
+                            "",
                     onComplete: (value) {
+                      _appointmentNotifier.removeError("purposeOfCancel");
                       _appointmentNotifier.addPurposeOfCancel(value);
                     },
+                    initialValue: "yes",
                   ),
                 ],
               ),

@@ -152,7 +152,7 @@ class HostNameSearch extends SearchDelegate<Host> {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.leaderboard),
+          Icon(Icons.person),
           SizedBox(
             height: 30,
           ),
@@ -195,39 +195,54 @@ class HostNameSearch extends SearchDelegate<Host> {
     }).toList();
 
     return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       itemCount: suggestedHosts.length,
       itemBuilder: (context, index) {
         final suggestion = suggestedHosts[index];
         final queryText = suggestion.username.substring(0, query.length);
         final remainingText = suggestion.username.substring(query.length);
         return ListTile(
+          tileColor: Palette.CUSTOM_WHITE,
+          contentPadding: EdgeInsets.all(4),
+          minVerticalPadding: 3,
           onTap: () {
             query = suggestion.username;
             close(context, suggestion);
           },
-          leading: Icon(Icons.leaderboard),
-          title: RichText(
-            text: TextSpan(
-              text: queryText,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+          leading: Icon(Icons.person),
+          title: Container(
+            padding: EdgeInsets.all(4),
+            child: RichText(
+              text: TextSpan(
+                text: queryText,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                children: [
+                  TextSpan(
+                    text: remainingText,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  )
+                ],
               ),
-              children: [
-                TextSpan(
-                  text: remainingText,
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                )
-              ],
             ),
           ),
-          subtitle: Text(suggestion.email),
-          trailing: Text(
-            suggestion.id,
-            style: TextStyle(fontWeight: FontWeight.w500),
+          subtitle: Container(
+            padding: EdgeInsets.symmetric(horizontal: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(suggestion.email),
+                Text(
+                  suggestion.id,
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
           ),
         );
       },
